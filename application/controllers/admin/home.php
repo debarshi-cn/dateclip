@@ -55,6 +55,7 @@ class Home extends CI_Controller {
             } else {
 
             	$this->load->model('Admin_model');
+            	$this->load->helper('date');
 
             	if($is_valid_details = $this->Admin_model->validate($email, $this->_encrip_password($password)))
             	{
@@ -62,9 +63,12 @@ class Home extends CI_Controller {
             			'id' => $is_valid_details[0]['id'],
             			'name' => $is_valid_details[0]['name'],
             			'email' => $is_valid_details[0]['email'],
+            			'last_login' => mdate("%m/%d/%Y - %h:%i %a", strtotime($is_valid_details[0]['last_login'])),
             			'is_admin_login' => true
             		);
             		$this->session->set_userdata($data);
+
+            		$this->Admin_model->update('id', $is_valid_details[0]['id'], array('last_login'=>date('Y-m-d H:i:s')));
 
             		redirect('admin/dashboard');
             	}

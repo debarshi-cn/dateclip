@@ -1,14 +1,4 @@
-<?php
-	$this->load->view('vwHeader');
-?>
-<!--
-Load Page Specific CSS and JS here
-Author : Abhishek R. Kaushik
-Downloaded from http://devzone.co.in
--->
-<link href="<?php echo HTTP_CSS_PATH; ?>jumbotron.css" rel="stylesheet">
-
-
+<?php $this->load->view('vwHeader'); ?>
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
@@ -39,6 +29,4 @@ Downloaded from http://devzone.co.in
       </div>
 
       <hr>
-<?php
-	$this->load->view('vwFooter');
-?>
+<?php $this->load->view('vwFooter');?>

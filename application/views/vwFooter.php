@@ -1,5 +1,5 @@
      <footer>
-     	<p>&copy; Company 2013. ark Admin Panel for Codeigniter</p>
+     	<p>&copy; DateClip.com 2013. All rights reserved.</p>
       </footer>
     </div> <!-- /container -->
 

@@ -74,7 +74,7 @@ class Admin_model extends CI_Model {
 		$report['message'] = $this->db->_error_message();
 		if($report !== 0){
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
