@@ -41,6 +41,7 @@
 $route['default_controller'] = "home";
 $route['404_override'] = '';
 
-
+/* admin */
+$route['users/(:num)'] = 'users/index'; //$1 = page number
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

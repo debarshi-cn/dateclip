@@ -5,6 +5,9 @@ body {
 /*
  * Global add-ons
  */
+.inner-spacer {
+	padding:0 15px 0 15px;
+}
 .spacer {
 	margin: 15px !important;
 }

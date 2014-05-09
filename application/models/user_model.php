@@ -6,41 +6,27 @@ class User_model extends CI_Model {
     * Store the new user's data into the database
     * @return boolean - check the insert
     */
-	function add_user()
+	function add($data)
 	{
-
-		$this->db->where('user_name', $this->input->post('username'));
-		$query = $this->db->get('users');
+		$this->db->where('email', $data['email']);
+		$query = $this->db->get('user');
 
         if($query->num_rows > 0){
-        	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>';
-			  echo "Username already taken";
-			echo '</strong></div>';
+        	return false;
 		} else {
-
-			$new_member_insert_data = array(
-				'first_name' => $this->input->post('first_name'),
-				'last_name' => $this->input->post('last_name'),
-				'email' => $this->input->post('email_address'),
-				'username' => $this->input->post('username'),
-				'password' => User::__encrip_password($this->input->post('password'))
-			);
-			$insert = $this->db->insert('users', $new_member_insert_data);
-		    return $insert;
+			return $this->db->insert('user', $data);
 		}
-
 	}//create_member
 
 	/**
 	 * Get user by his is
-	 * @param string $fieldname
-	 * @param int $field_value
+	 * @param numeric $id
 	 * @return array
 	 */
 	public function get_user_by_id($id)
 	{
 		$this->db->select('*');
-		$this->db->from('users');
+		$this->db->from('user');
 		$this->db->where('id', $id);
 		$query = $this->db->get();
 
@@ -52,16 +38,18 @@ class User_model extends CI_Model {
 	 * @param array $data - associative array with data to store
 	 * @return boolean
 	 */
-	function update_user($field_name, $field_value, $data)
+	function update($field_name, $field_value, $data)
 	{
 		$this->db->where($field_name, $field_value);
-		$this->db->update('users', $data);
+		$this->db->update('user', $data);
+
 		$report = array();
 		$report['error'] = $this->db->_error_number();
 		$report['message'] = $this->db->_error_message();
+
 		if($report !== 0){
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -76,9 +64,8 @@ class User_model extends CI_Model {
 	 * @param int $limit_end
 	 * @return array
 	 */
-	public function get_users($search_string=null, $order=null, $order_type='Asc', $limit_start, $limit_end)
+	public function get_users($search=array(), $limit_start, $limit_end)
 	{
-
 		$this->db->select('user.id');
 		$this->db->select('user.full_name');
 		$this->db->select('user.first_name');
@@ -88,15 +75,28 @@ class User_model extends CI_Model {
 		$this->db->select('user.status');
 		$this->db->from('user');
 
-		if ($search_string){
-			$this->db->like('first_name', $search_string);
+		if (isset($search['name_selected']) && $search['name_selected'] <> "") {
+			$this->db->like('full_name', $search['name_selected']);
 		}
 
-		if ($order) {
+		if (isset($search['email_selected']) && $search['email_selected'] <> "") {
+			$this->db->like('email', $search['email_selected']);
+		}
+
+		if (isset($search['location_selected']) && $search['location_selected'] <> "") {
+			$this->db->like('location', $search['location_selected']);
+		}
+
+		if (isset($search['status_selected']) && $search['status_selected'] <> "") {
+			$this->db->like('status', $search['status_selected']);
+		}
+
+		$this->db->order_by($search['sort_selected'], $search['sort_dir_selected']);
+		/*if ($order) {
 			$this->db->order_by($order, $order_type);
 		} else {
 			$this->db->order_by('id', $order_type);
-		}
+		}*/
 
 		$this->db->limit($limit_start, $limit_end);
 
@@ -111,18 +111,27 @@ class User_model extends CI_Model {
 	 * @param int $order
 	 * @return int
 	 */
-	function count_users($search_string=null, $order=null)
+	function count_users($search=array())
 	{
 		$this->db->select('*');
 		$this->db->from('user');
-		if($search_string){
-			$this->db->like('first_name', $search_string);
+
+		if (isset($search['name_selected']) && $search['name_selected'] <> "") {
+			$this->db->like('full_name', $search['name_selected']);
 		}
-		if($order){
-			$this->db->order_by($order, 'Asc');
-		}else{
-			$this->db->order_by('id', 'Asc');
+
+		if (isset($search['email_selected']) && $search['email_selected'] <> "") {
+			$this->db->like('email', $search['email_selected']);
 		}
+
+		if (isset($search['location_selected']) && $search['location_selected'] <> "") {
+			$this->db->like('location', $search['location_selected']);
+		}
+
+		if (isset($search['status_selected']) && $search['status_selected'] <> "") {
+			$this->db->like('status', $search['status_selected']);
+		}
+
 		$query = $this->db->get();
 		return $query->num_rows();
 	}

@@ -30,7 +30,7 @@ class Home extends CI_Controller {
         if ($this->session->userdata('is_admin_login')) {
         	redirect('admin/dashboard');
         } else {
-        	$this->load->view('admin/vwLogin');
+        	$this->load->view('admin/login');
         }
     }
 
@@ -49,7 +49,7 @@ class Home extends CI_Controller {
 
             if ($this->form_validation->run() == FALSE) {
 
-            	$data['error'] = '<strong>Oh snap!!</strong> Please enter something';
+            	$data['error'] = '<strong>Oh snap!!</strong> Please enter something.';
                 $this->load->view('admin/vwLogin', $data);
 
             } else {
@@ -74,8 +74,8 @@ class Home extends CI_Controller {
             	}
                 else {
 
-                	$data['error'] = '<strong>Grr!!</strong> Email or Password incorrect';
-                    $this->load->view('admin/vwLogin', $data);
+                	$data['error'] = '<strong>Oh snap!!</strong> Change a few things up and try submitting again.';
+                    $this->load->view('admin/login', $data);
                 }
             }
         }

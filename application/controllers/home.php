@@ -29,7 +29,7 @@ class Home extends CI_Controller {
     public function index() {
 
         $data['page'] = 'home';
-        $this->load->view('vwHome', $data);
+        $this->load->view('home', $data);
     }
 
 

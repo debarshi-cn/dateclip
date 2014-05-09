@@ -29,15 +29,13 @@ class Dashboard extends CI_Controller {
 
     public function index() {
 
-        $data['page'] = 'dashboard';
-        $data['title'] = 'dashboard';
-        $this->load->view('admin/vwDashboard', $data);
+    	$data['page'] = 'dashboard';
+        $data['page_title'] = 'DateClip Admin Panel :: Dashboard';
+
+        $data['main_content'] = 'admin/dashboard';
+        $this->load->view('admin/includes/template', $data);
     }
-
-
-
-
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file dashboard.php */
+/* Location: ./application/controllers/admin/dashboard.php */
