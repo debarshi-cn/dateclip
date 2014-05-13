@@ -24,7 +24,9 @@ class Home extends CI_Controller {
         $this->load->library('form_validation');
     }
 
-
+    /**
+     * Default admin method
+     */
     public function index() {
 
         if ($this->session->userdata('is_admin_login')) {
@@ -34,7 +36,10 @@ class Home extends CI_Controller {
         }
     }
 
-
+    /**
+     * Login into account
+     * Sets sesstion data
+     */
     public function do_login() {
 
     	if ($this->session->userdata('is_admin_login')) {
@@ -89,6 +94,9 @@ class Home extends CI_Controller {
     	return md5($password);
     }
 
+    /**
+     * Logout from account
+     */
     public function logout() {
 
         $this->session->sess_destroy();
@@ -96,10 +104,7 @@ class Home extends CI_Controller {
         $this->output->set_header("Pragma: no-cache");
         redirect('admin', 'refresh');
     }
-
-
-
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file home.php */
+/* Location: ./application/controllers/admin/home.php */

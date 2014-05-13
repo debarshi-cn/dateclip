@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Users extends CI_Controller {
+class Users extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -20,14 +20,23 @@ class Users extends CI_Controller {
     public function __construct() {
 
         parent::__construct();
-        $this->load->model('user_model');
+        //$this->load->model('user_model');
         $this->load->library('form_validation');
 
         if (!$this->session->userdata('is_admin_login')) {
             redirect('admin/home');
         }
+
+        $this->load->model('my_model_v2');
+        $this->my_model_v2->initialize(array(
+        	'table_name' => 'user',
+        	'primary_key' => 'id'
+        ));
     }
 
+    /**
+     *
+     */
     public function index() {
 
     	//echo $this->router->class."/".$this->router->method;die;
@@ -90,13 +99,10 @@ class Users extends CI_Controller {
     	}
 
     	//make the data type var avaible to our view
-    	$data['search']['name_selected'] = $searchName;
-    	$data['search']['email_selected'] = $searchEmail;
-    	$data['search']['location_selected'] = $searchLocation;
-    	$data['search']['status_selected'] = $searchStatus;
-
-    	$data['search']['sort_dir_selected'] = $sort_dir;
-    	$data['search']['sort_selected'] = $sort;
+    	$data['search']['full_name'] = $searchName;
+    	$data['search']['email'] = $searchEmail;
+    	$data['search']['location'] = $searchLocation;
+    	$data['search']['status'] = $searchStatus;
 
     	// Save session data in the session
     	if (isset($filter_session_data)) {
@@ -112,13 +118,13 @@ class Users extends CI_Controller {
     						'sort_selected' => '');
 
     		$this->session->set_userdata($filter);
-    		redirect('/admin/users/', 'refresh');
+    		redirect('/admin/users/');
     	}
 
     	$this->load->library('pagination');
 
     	//pagination settings
-    	$config['per_page'] = 10;
+    	$config['per_page'] = 2;
     	$config['base_url'] = base_url().'admin/users/index';
     	$config['use_page_numbers'] = TRUE;
     	$config['num_links'] = 20;
@@ -143,9 +149,8 @@ class Users extends CI_Controller {
     	}
 
     	//fetch sql data into arrays
-    	$data['count_users'] = $this->user_model->count_users($data['search']);
-    	$data['users'] = $this->user_model->get_users($data['search'], $config['per_page'], $limit_end);
-
+    	$data['count_users'] = count($this->my_model_v2->get(null, null, null, $data['search']));
+    	$data['list'] = $this->my_model_v2->get($config['per_page'], $limit_end, array($sort => $sort_dir), $data['search']);
     	$config['total_rows'] = $data['count_users'];
 
 
@@ -154,11 +159,14 @@ class Users extends CI_Controller {
 
     	$data['page'] = 'user';
     	$data['page_title'] = 'DateClip Admin Panel :: User Management ';
-    	$data['sort_fields'] = $this->sorting_format($data['search']);
+    	$data['sort_fields'] = $this->sorting_format($sort, $sort_dir);
     	$data['main_content'] = 'admin/user/list';
     	$this->load->view('admin/includes/template', $data);
     }
 
+    /**
+     *
+     */
     public function add() {
 
     	//if save button was clicked, get the data sent via post
@@ -176,29 +184,30 @@ class Users extends CI_Controller {
     		if ($this->form_validation->run())
     		{
     			$data_to_store = array(
-    				'full_name' => $this->input->post('full_name'),
-    				'first_name' => $this->input->post('first_name'),
-    				'last_name' => $this->input->post('last_name'),
-    				'email' => $this->input->post('email'),
-    				'gender' => $this->input->post('gender'),
-    				'date_of_birth' => $this->input->post('date_of_birth'),
-    				'location' => $this->input->post('location'),
-    				'status' => $this->input->post('status')
+    				'full_name' => htmlspecialchars($this->input->post('full_name'), ENT_QUOTES, 'utf-8'),
+    				'first_name' => htmlspecialchars($this->input->post('first_name'), ENT_QUOTES, 'utf-8'),
+    				'last_name' => htmlspecialchars($this->input->post('last_name'), ENT_QUOTES, 'utf-8'),
+    				'email' => htmlspecialchars($this->input->post('email'), ENT_QUOTES, 'utf-8'),
+    				'gender' => htmlspecialchars($this->input->post('gender'), ENT_QUOTES, 'utf-8'),
+    				'date_of_birth' => htmlspecialchars($this->input->post('date_of_birth'), ENT_QUOTES, 'utf-8'),
+    				'location' => htmlspecialchars($this->input->post('location'), ENT_QUOTES, 'utf-8'),
+    				'status' => htmlspecialchars($this->input->post('status'), ENT_QUOTES, 'utf-8')
     			);
 
     			//if the insert has returned true then we show the flash message
-    			if ($this->user_model->add($data_to_store) == TRUE) {
-    				$this->session->set_flashdata('flash_message', 'updated');
+    			if ($this->my_model_v2->insert($data_to_store)) {
+    				$this->session->set_flashdata('message_type', 'success');
+    				$this->session->set_flashdata('message', '<strong>Well done!</strong> User have been added successfully.');
     			} else {
-    				$this->session->set_flashdata('flash_message', 'not_updated');
+    				$this->session->set_flashdata('message_type', 'danger');
+    				$this->session->set_flashdata('message', '<strong>Oh snap!</strong> User already exists.');
     			}
-    			redirect('/admin/users/', 'refresh');
-    		}//validation run
-
+    			redirect('/admin/users/');
+    		} //validation run
     	}
 
     	$data['page'] = 'user';
-    	$data['page_title'] = 'DateClip Admin Panel :: User Management > Add User';
+    	$data['page_title'] = 'DateClip Admin Panel :: User Management &raquo; Add User';
 
     	$data['main_content'] = 'admin/user/add';
     	$this->load->view('admin/includes/template', $data);
@@ -206,8 +215,10 @@ class Users extends CI_Controller {
 
      public function edit($id = 0) {
 
-     	if (!is_numeric($id) || $id == 0) {
-     		redirect('/admin/users/', 'refresh');
+     	$data['user'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
+
+     	if (!is_numeric($id) || $id == 0 || empty($data['user'])) {
+     		redirect('/admin/users/');
      	}
 
      	//if save button was clicked, get the data sent via post
@@ -236,63 +247,116 @@ class Users extends CI_Controller {
      			);
 
      			//if the insert has returned true then we show the flash message
-     			if ($this->user_model->update('id', $id, $data_to_store) == TRUE) {
-     				$this->session->set_flashdata('flash_message', 'updated');
+     			if ($this->my_model_v2->update($id, $data_to_store)) {
+     				$this->session->set_flashdata('message_type', 'success');
+    				$this->session->set_flashdata('message', '<strong>Well done!</strong> User successfully updated.');
      			} else{
-     				$this->session->set_flashdata('flash_message', 'not_updated');
+     				$this->session->set_flashdata('message_type', 'danger');
+     				$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Change something and try again.');
      			}
-     		}//validation run
-
+     			redirect('/admin/users/');
+     		} //validation run
      	}
 
      	$data['page'] = 'user';
-    	$data['page_title'] = 'DateClip Admin Panel :: User Management > Edit User';
-
-    	$data['user'] = $this->user_model->get_user_by_id($id);
+    	$data['page_title'] = 'DateClip Admin Panel :: User Management &raquo; Edit User';
 
     	$data['main_content'] = 'admin/user/edit';
     	$this->load->view('admin/includes/template', $data);
     }
 
-    public function block_user() {
-        // Code goes here
+    /**
+     *
+     */
+    public function update_status() {
+
+    	if ($this->input->server('REQUEST_METHOD') === 'POST')
+    	{
+    		//form validation
+    		$this->form_validation->set_rules('operation', 'Operation', 'required');
+    		$this->form_validation->set_rules('item_id[]', 'User', 'trim|required');
+
+    		$this->form_validation->set_error_delimiters('', '');
+
+    		//if the form has passed through the validation
+    		if ($this->form_validation->run())
+    		{
+    			$count = 0;
+    			$items = $this->input->post('item_id');
+    			$operation = $this->input->post('operation');
+
+    			$data_to_store = array(
+    				'status' => ($operation == "active")?1:0
+    			);
+
+    			foreach ($items as $id=>$value) {
+
+    				if ($this->my_model_v2->update($id, $data_to_store)) {
+    					$count++;
+    				}
+    			}
+    			$this->session->set_flashdata('message_type', 'success');
+    			$this->session->set_flashdata('message', '<strong>Well done!</strong> '.$count.' user(s) successfully updated.');
+
+    		} else {
+    			$this->session->set_flashdata('message_type', 'danger');
+    			$this->session->set_flashdata('message', validation_errors());
+    		}
+    		redirect('/admin/users/');
+    	}
     }
 
-    public function delete_user() {
-        // Code goes here
+    /**
+     *
+     * @param unknown_type $id
+     */
+    public function details($id) {
+
+    	$data['user'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
+
+    	// Check for actual user
+    	if (isset($data['user']) && empty($data['user'])) {
+    		$data['error'] = "No data found";
+    		$this->load->view('admin/user/details', $data);
+    		return;
+    	}
+
+    	$this->load->view('admin/user/details', $data);
     }
 
 
-    public function sorting_format($search = array()) {
+    /**
+     *
+     * @param unknown_type $search
+     */
+    public function sorting_format($sort, $order) {
 
     	$result['full_name'] = '<a href="?sort=full_name&sort_dir=asc">Full name</a>';
     	$result['email'] = '<a href="?sort=email&sort_dir=asc">Email address</a>';
     	$result['location'] = '<a href="?sort=location&sort_dir=asc">Location</a>';
 
-    	if ($search['sort_dir_selected'] == 'asc') {
+    	if ($order == 'asc') {
     		$dirc = "desc";
-    		$icon = '<span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>';
+    		$icon = '<span class="glyphicon glyphicon-sort-by-alphabet"></span>';
     	} else {
     		$dirc = "asc";
-    		$icon = '<span class="glyphicon glyphicon-sort-by-alphabet"></span>';
+    		$icon = '<span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>';
     	}
 
-    	if ($search['sort_selected'] == 'full_name') {
+    	if ($sort == 'full_name') {
     		$result['full_name'] = 'Full name <a href="?sort=full_name&sort_dir='.$dirc.'">'.$icon.'</a>';
     	}
 
-    	if ($search['sort_selected'] == 'email') {
+    	if ($sort == 'email') {
     		$result['email'] = 'Email address <a href="?sort=email&sort_dir='.$dirc.'">'.$icon.'</a>';
     	}
 
-    	if ($search['sort_selected'] == 'location') {
+    	if ($sort == 'location') {
     		$result['location'] = 'Location <a href="?sort=location&sort_dir='.$dirc.'">'.$icon.'</a>';
     	}
     	return $result;
     }
-
-
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file users.php */
+/* Location: ./application/controllers/admin/users.php */

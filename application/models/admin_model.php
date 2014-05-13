@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Admin_model extends CI_Model {
 
@@ -8,18 +8,15 @@ class Admin_model extends CI_Model {
     * @param string $password
     * @return void
     */
-	function validate($email, $password)
-	{
+	function validate($email, $password) {
+
 		$this->db->where('email', $email);
 		$this->db->where('password', $password);
 		$query = $this->db->get('admin');
 
-		if($query->num_rows == 1)
-		{
+		if ($query->num_rows == 1) {
 			return $query->result_array();
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
@@ -29,12 +26,13 @@ class Admin_model extends CI_Model {
     * store it in a new array and return it to the controller
     * @return array
     */
-	function get_db_session_data()
-	{
+	function get_db_session_data() {
+
 		$query = $this->db->select('user_data')->get('ci_sessions');
 		$user = array(); /* array to store the user data we fetch */
-		foreach ($query->result() as $row)
-		{
+
+		foreach ($query->result() as $row) {
+
 		    $udata = unserialize($row->user_data);
 		    /* put data in array using username as key */
 		    $user['user_name'] = $udata['user_name'];
@@ -50,8 +48,8 @@ class Admin_model extends CI_Model {
 	 * @param int $field_value
 	 * @return array
 	 */
-	public function get_admin_by_id($id)
-	{
+	public function get_admin_by_id($id) {
+
 		$this->db->select('*');
 		$this->db->from('admin');
 		$this->db->where('id', $id);
@@ -65,14 +63,16 @@ class Admin_model extends CI_Model {
 	 * @param array $data - associative array with data to store
 	 * @return boolean
 	 */
-	function update($field_name, $field_value, $data)
-	{
+	function update($field_name, $field_value, $data) {
+
 		$this->db->where($field_name, $field_value);
 		$this->db->update('admin', $data);
+
 		$report = array();
 		$report['error'] = $this->db->_error_number();
 		$report['message'] = $this->db->_error_message();
-		if($report !== 0){
+
+		if ($report !== 0) {
 			return true;
 		} else {
 			return false;
@@ -80,3 +80,5 @@ class Admin_model extends CI_Model {
 	}
 }
 
+/* End of file admin_model.php */
+/* Location: ./application/models/admin_model.php */

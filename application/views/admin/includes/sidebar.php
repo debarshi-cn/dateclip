@@ -1,15 +1,15 @@
 <div class="col-sm-3 col-md-2 sidebar">
 	<ul class="nav nav-sidebar">
-		<li <?php echo $page == 'dashboard' ? 'class="active"' : '' ?>><a href="<?php echo base_url(); ?>admin/dashboard">Dashboard</a></li>
+		<li <?php echo $page == 'dashboard' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>dashboard">Dashboard</a></li>
     </ul>
     <ul class="nav nav-sidebar">
     	<li class="nav-sidebar-head">Management</li>
-    	<li <?php echo $page == 'user' ? 'class="active"' : '' ?>><a href="<?php echo base_url(); ?>admin/users">User Mangement</a></li>
-        <li><a href="">Mass Messaging</a></li>
+    	<li <?php echo $page == 'user' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>users">User Mangement</a></li>
+        <li <?php echo $page == 'massmail' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>massmail">Mass Messaging</a></li>
         <li><a href="">CMS</a></li>
-        <li><a href="">Flag Mangement</a></li>
-        <li><a href="">Coach Mangement</a></li>
-        <li><a href="">Credit Plan Mangement</a></li>
+        <li <?php echo $page == 'flag' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>flag">Flag Mangement</a></li>
+        <li <?php echo $page == 'coach' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>coach">Coach Mangement</a></li>
+        <li <?php echo $page == 'package' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>package">Credit Plan Mangement</a></li>
     </ul>
     <ul class="nav nav-sidebar">
     	<li class="nav-sidebar-head">Reports</li>

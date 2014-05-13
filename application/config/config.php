@@ -363,6 +363,8 @@ $config['proxy_ips'] = '';
 | Custom Constants
 |-------------------------------------------------------------------------
 */
+define('HTTP_ADMIN_PATH', $config['base_url'].'admin/');
+
 define('HTTP_CSS_PATH', $config['base_url'].'assets/css/');
 define('HTTP_IMAGES_PATH', $config['base_url'].'assets/images/');
 define('HTTP_JS_PATH', $config['base_url'].'assets/js/');
@@ -371,5 +373,13 @@ define('HTTP_CSS_PATH_ADMIN', $config['base_url'].'assets/admin/css/');
 define('HTTP_IMAGES_PATH_ADMIN', $config['base_url'].'assets/admin/images/');
 define('HTTP_JS_PATH_ADMIN', $config['base_url'].'assets/js/jquery/');
 
+
+function __autoload($class)
+{
+	if(strpos($class, 'CI_') !== 0)
+	{
+		@include_once( APPPATH . 'core/'. $class . EXT );
+	}
+}
 /* End of file config.php */
 /* Location: ./application/config/config.php */

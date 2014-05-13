@@ -1,7 +1,7 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	<ol class="breadcrumb">
-		<li><a href="<?php echo base_url(); ?>admin/dashboard">Dashboard</a></li>
-		<li><a href="<?php echo base_url(); ?>admin/users">User Management</a></li>
+		<li><a href="<?php echo HTTP_ADMIN_PATH; ?>dashboard">Dashboard</a></li>
+		<li><a href="<?php echo HTTP_ADMIN_PATH; ?>users">User Management</a></li>
 		<li class="active">Add User</li>
 	</ol>
 
@@ -11,7 +11,7 @@
 			echo validation_errors();
 
 			$attributes = array('class' => '', 'id' => '');
-			echo form_open('admin/users/add', $attributes);
+			echo form_open(HTTP_ADMIN_PATH.'users/add', $attributes);
       	?>
 	  	<div class="form-group">
 	  		<label for="inputFullName">Full name</label>
@@ -76,7 +76,7 @@
 		</div>
 
 	  	<div class="form-group">
-	  		<button type="submit" class="btn btn-primary">Save User!</button> or <a href="<?php echo base_url(); ?>admin/users">Cancel</a>
+	  		<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok-sign"></span> Save User</button> or <a href="<?php echo HTTP_ADMIN_PATH; ?>users">Cancel</a>
 	  	</div>
 	</form>
 </div>

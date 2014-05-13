@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<?php echo base_url(); ?>admin/dashboard">DateClip Admin Panel</a>
+			<a class="navbar-brand" href="<?php echo HTTP_ADMIN_PATH; ?>dashboard">DateClip Admin Panel</a>
 		</div>
 
 		<div class="navbar-collapse collapse">
@@ -18,7 +18,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="#">Profile</a></li>
 						<li class="divider"></li>
-						<li><a href="<?php echo base_url(); ?>admin/home/logout">Logout</a></li>
+						<li><a href="<?php echo HTTP_ADMIN_PATH; ?>home/logout">Logout</a></li>
 					</ul>
 				</li>
 			</ul>
