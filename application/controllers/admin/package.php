@@ -88,12 +88,6 @@ class Package extends MY_Controller {
      */
     public function edit ($id = null) {
 
-    	$data['data_info'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
-
-    	if (!is_numeric($id) || $id == 0 || empty($data['data_info'])) {
-    		redirect('/admin/package/');
-    	}
-
     	// if save button was clicked, get the data sent via post
     	if ($this->input->server('REQUEST_METHOD') === 'POST') {
 
@@ -110,11 +104,11 @@ class Package extends MY_Controller {
     		if ($this->form_validation->run()) {
 
     			$data_to_store = array(
-    				'name' => htmlspecialchars($this->input->post('name'), ENT_QUOTES, 'utf-8'),
-    				'type' => htmlspecialchars($this->input->post('type'), ENT_QUOTES, 'utf-8'),
-    				'description' => $this->input->post('description'),
-    				'price' => htmlspecialchars($this->input->post('price'), ENT_QUOTES, 'utf-8'),
-    				'credit' => htmlspecialchars($this->input->post('credit'), ENT_QUOTES, 'utf-8')
+    					'name' => htmlspecialchars($this->input->post('name'), ENT_QUOTES, 'utf-8'),
+    					'type' => htmlspecialchars($this->input->post('type'), ENT_QUOTES, 'utf-8'),
+    					'description' => $this->input->post('description'),
+    					'price' => htmlspecialchars($this->input->post('price'), ENT_QUOTES, 'utf-8'),
+    					'credit' => htmlspecialchars($this->input->post('credit'), ENT_QUOTES, 'utf-8')
     			);
 
     			//if the insert has returned true then we show the flash message
@@ -128,6 +122,13 @@ class Package extends MY_Controller {
     			redirect('/admin/package/');
     		}
     	}
+
+    	$data['data_info'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
+
+    	if (!is_numeric($id) || $id == 0 || empty($data['data_info'])) {
+    		redirect('/admin/package/');
+    	}
+
 
      	$data['page'] = 'package';
         $data['page_title'] = 'DateClip Admin Panel :: Package Management &raquo; Edit Package';

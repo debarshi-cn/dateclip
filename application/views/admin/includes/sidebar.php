@@ -6,7 +6,7 @@
     	<li class="nav-sidebar-head">Management</li>
     	<li <?php echo $page == 'user' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>users">User Mangement</a></li>
         <li <?php echo $page == 'massmail' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>massmail">Mass Messaging</a></li>
-        <li><a href="">CMS</a></li>
+        <li <?php echo $page == 'cms' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>cms">CMS</a></li>
         <li <?php echo $page == 'flag' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>flag">Flag Mangement</a></li>
         <li <?php echo $page == 'coach' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>coach">Coach Mangement</a></li>
         <li <?php echo $page == 'package' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>package">Credit Plan Mangement</a></li>

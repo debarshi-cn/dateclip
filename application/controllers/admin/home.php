@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Home extends CI_Controller {
+class Home extends MY_Controller {
 
     /**
      * Index Page for this controller.
@@ -32,7 +32,9 @@ class Home extends CI_Controller {
         if ($this->session->userdata('is_admin_login')) {
         	redirect('admin/dashboard');
         } else {
-        	$this->load->view('admin/login');
+
+        	$data['page_title'] = 'DateClip Admin Panel :: Login here ';
+        	$this->load->view('admin/login', $data);
         }
     }
 
@@ -85,6 +87,144 @@ class Home extends CI_Controller {
             }
         }
     }
+
+    /**
+     *  Admin Forgot Password
+     */
+    function forgot_password() {
+
+    	$this->load->model('my_model_v2');
+        $this->my_model_v2->initialize(array(
+        	'table_name' => 'admin',
+        	'primary_key' => 'id'
+        ));
+
+        $data['page_title'] = 'DateClip Admin Panel :: Forgot password? ';
+
+    	if ($this->input->server('REQUEST_METHOD') === 'POST') {
+
+    		//form validation
+    		$this->form_validation->set_rules('email', 'Email address', 'required|email');
+    		$this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>', '</div>');
+
+    		//if the form has passed through the validation
+    		if ($this->form_validation->run()) {
+
+    			$email = $this->input->post('email');
+    			$this->load->library('encrypt');
+
+    			if ($this->my_model_v2->is_valid_data('admin', array('email' => $email))) {
+
+    				$user_info = $this->my_model_v2->get(1, 0, '', array('email' => $email));
+
+    				$this->my_model_v2->initialize(array(
+    					'table_name' => 'user_password_log',
+    					'primary_key' => 'id'
+    				));
+
+    				$data_to_insert = array(
+    					'user_id' => $user_info->id,
+    					'key' => md5(time()),
+    					'create_date' => date('Y-m-d H:i:s')
+    				);
+    				$this->my_model_v2->insert($data_to_insert);
+
+    				// TODO: Send email alert
+
+    				$this->session->set_flashdata('message_type', 'success');
+    				$this->session->set_flashdata('message', '<strong>Well done!</strong> Check your email to recover password.');
+    			} else {
+    				$this->session->set_flashdata('message_type', 'danger');
+    				$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Email address is incorrect.');
+    			}
+    		}
+    		redirect(HTTP_ADMIN_PATH.'home/forgot_password/');
+    	}
+
+    	$this->load->view('admin/forgot_password', $data);
+    }
+
+
+   /**
+    *
+    * @param unknown_type $enc_str
+    */
+   function recover_password ($encrypted_string) {
+
+    	$this->load->library('encrypt');
+    	$this->load->model('my_model_v2');
+
+        $data['page_title'] = 'DateClip Admin Panel :: Recover password ';
+
+        if ($this->input->server('REQUEST_METHOD') === 'POST') {
+
+        	//form validation
+        	$this->form_validation->set_rules('new_pwd', 'New Password', 'trim|required|matches[re_new_pwd]');
+        	$this->form_validation->set_rules('re_new_pwd', 'Retype Password', 'trim|required');
+        	$this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>', '</div>');
+
+        	//if the form has passed through the validation
+        	if ($this->form_validation->run()) {
+
+        		$key = $this->input->post('key');
+        		$id = $this->encrypt->decode($key);
+
+        		$pwd = $this->_encrip_password($this->input->post('new_pwd'));
+
+        		$this->my_model_v2->initialize(array(
+        			'table_name' => 'admin',
+        			'primary_key' => 'id'
+        		));
+
+        		if ($this->my_model_v2->update($id, array('password' => $pwd))) {
+        			$this->session->set_flashdata('message_type', 'success');
+        			$this->session->set_flashdata('message', '<strong>Well done!</strong> Password sucessfully updated.');
+        		}
+        		redirect(HTTP_ADMIN_PATH);
+        	}
+        }
+
+    	if ($encrypted_string) {
+
+    		$this->my_model_v2->initialize(array(
+    			'table_name' => 'user_password_log',
+    			'primary_key' => 'id'
+    		));
+
+    		if ($this->my_model_v2->is_valid_data('user_password_log', array('key' => $encrypted_string, 'visited' => 0))) {
+    			$data['user_info'] = $this->my_model_v2->get(1, 0, '', array('key' => $encrypted_string));
+
+    			if (empty($data['user_info'])) {
+    				redirect(HTTP_ADMIN_PATH);
+    			}
+
+    			// Update the link status
+    			$this->my_model_v2->update($data['user_info']->id, array('visited' => 1));
+
+    			// Check for validity of the link (1 hr)
+    			$time = strtotime($data['user_info']->create_date);
+    			$now = time();
+    			if ($now - $time > 3600) {
+    				$this->session->set_flashdata('message_type', 'danger');
+    				$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Allowed timelimit exceed.');
+    				redirect(HTTP_ADMIN_PATH);
+    			}
+    			$data['user_info']->enc_key = $this->encrypt->encode($data['user_info']->user_id);
+    			$this->load->view('admin/recover_password', $data);
+
+    		} else {
+
+    			$this->session->set_flashdata('message_type', 'danger');
+    			$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Not a valid link.');
+
+    			redirect(HTTP_ADMIN_PATH);
+    		}
+    	} else {
+    		redirect(HTTP_ADMIN_PATH);
+    	}
+
+    }
+
 
     /**
      * encript the password

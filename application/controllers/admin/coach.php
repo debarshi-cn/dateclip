@@ -79,12 +79,6 @@ class Coach extends MY_Controller {
      */
     public function edit($id = null) {
 
-    	$data['data_info'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
-
-    	if (!is_numeric($id) || $id == 0 || empty($data['data_info'])) {
-    		redirect('/admin/coach/');
-    	}
-
     	// if save button was clicked, get the data sent via post
     	if ($this->input->server('REQUEST_METHOD') === 'POST') {
 
@@ -98,7 +92,7 @@ class Coach extends MY_Controller {
     		if ($this->form_validation->run()) {
 
     			$data_to_store = array(
-    				'coach' => htmlspecialchars($this->input->post('title'), ENT_QUOTES, 'utf-8')
+    					'coach' => htmlspecialchars($this->input->post('title'), ENT_QUOTES, 'utf-8')
     			);
 
     			//if the insert has returned true then we show the flash message
@@ -112,6 +106,13 @@ class Coach extends MY_Controller {
     			redirect('/admin/coach/');
     		}
     	}
+
+    	$data['data_info'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
+
+    	if (!is_numeric($id) || $id == 0 || empty($data['data_info'])) {
+    		redirect('/admin/coach/');
+    	}
+
      	$data['page'] = 'coach';
         $data['page_title'] = 'DateClip Admin Panel :: Coach Management &raquo; Edit Coach';
 

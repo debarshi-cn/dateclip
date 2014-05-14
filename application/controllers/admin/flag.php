@@ -80,12 +80,6 @@ class Flag extends MY_Controller {
      */
     public function edit ($id = null) {
 
-    	$data['data_info'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
-
-    	if (!is_numeric($id) || $id == 0 || empty($data['data_info'])) {
-    		redirect('/admin/flag/');
-    	}
-
     	// if save button was clicked, get the data sent via post
     	if ($this->input->server('REQUEST_METHOD') === 'POST') {
 
@@ -99,7 +93,7 @@ class Flag extends MY_Controller {
     		if ($this->form_validation->run()) {
 
     			$data_to_store = array(
-    				'flag' => htmlspecialchars($this->input->post('title'), ENT_QUOTES, 'utf-8')
+    					'flag' => htmlspecialchars($this->input->post('title'), ENT_QUOTES, 'utf-8')
     			);
 
     			//if the insert has returned true then we show the flash message
@@ -113,6 +107,13 @@ class Flag extends MY_Controller {
     			redirect('/admin/flag/');
     		}
     	}
+
+    	$data['data_info'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
+
+    	if (!is_numeric($id) || $id == 0 || empty($data['data_info'])) {
+    		redirect('/admin/flag/');
+    	}
+
 
      	$data['page'] = 'flag';
         $data['page_title'] = 'DateClip Admin Panel :: Flag Management &raquo; Edit Flag';

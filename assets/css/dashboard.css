@@ -50,11 +50,14 @@ body {
   	/*padding-right: 2%;*/
   	padding-left: 10%;
 }
+
 .nav-sidebar > .active > a {
   	color: #fff;
   	background-color: #428bca;
 }
-
+.nav-sidebar > .active > a:hover {
+    background-color: #428bca;
+}
 .nav-sidebar .nav-sidebar-head {
 	font-weight:bold;
 	padding:4% 0 4% 7%;

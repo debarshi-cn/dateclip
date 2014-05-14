@@ -215,12 +215,6 @@ class Users extends MY_Controller {
 
      public function edit($id = 0) {
 
-     	$data['user'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
-
-     	if (!is_numeric($id) || $id == 0 || empty($data['user'])) {
-     		redirect('/admin/users/');
-     	}
-
      	//if save button was clicked, get the data sent via post
      	if ($this->input->server('REQUEST_METHOD') === 'POST')
      	{
@@ -236,20 +230,20 @@ class Users extends MY_Controller {
      		if ($this->form_validation->run())
      		{
      			$data_to_store = array(
-     				'full_name' => $this->input->post('full_name'),
-     				'first_name' => $this->input->post('first_name'),
-     				'last_name' => $this->input->post('last_name'),
-     				'email' => $this->input->post('email'),
-     				'gender' => $this->input->post('gender'),
-     				'date_of_birth' => $this->input->post('date_of_birth'),
-     				'location' => $this->input->post('location'),
-     				'status' => $this->input->post('status')
+     					'full_name' => $this->input->post('full_name'),
+     					'first_name' => $this->input->post('first_name'),
+     					'last_name' => $this->input->post('last_name'),
+     					'email' => $this->input->post('email'),
+     					'gender' => $this->input->post('gender'),
+     					'date_of_birth' => $this->input->post('date_of_birth'),
+     					'location' => $this->input->post('location'),
+     					'status' => $this->input->post('status')
      			);
 
      			//if the insert has returned true then we show the flash message
      			if ($this->my_model_v2->update($id, $data_to_store)) {
      				$this->session->set_flashdata('message_type', 'success');
-    				$this->session->set_flashdata('message', '<strong>Well done!</strong> User successfully updated.');
+     				$this->session->set_flashdata('message', '<strong>Well done!</strong> User successfully updated.');
      			} else{
      				$this->session->set_flashdata('message_type', 'danger');
      				$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Change something and try again.');
@@ -257,6 +251,13 @@ class Users extends MY_Controller {
      			redirect('/admin/users/');
      		} //validation run
      	}
+
+     	$data['user'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
+
+     	if (!is_numeric($id) || $id == 0 || empty($data['user'])) {
+     		redirect('/admin/users/');
+     	}
+
 
      	$data['page'] = 'user';
     	$data['page_title'] = 'DateClip Admin Panel :: User Management &raquo; Edit User';
