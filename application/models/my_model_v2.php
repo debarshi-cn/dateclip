@@ -157,6 +157,18 @@ class my_model_v2 extends CI_Model {
 			return false;
 	}
 
+	public function query($where = "") {
+
+		$sql = "SELECT * FROM ".$this->table_name." ".$where;
+		$query = $this->db->query($sql);
+
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}
+
+		return false;
+	}
+
 	private function _optimize() {
 
 		$this->last_query = $this->db->last_query();

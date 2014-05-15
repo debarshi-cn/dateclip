@@ -1,7 +1,8 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	<ul class="breadcrumb">
-		<li><a href='#'>Dashboard</a></li>
-		<li class="active">CMS Management</li>
+		<li><a href='<?php echo HTTP_ADMIN_PATH; ?>dashboard'>Dashboard</a></li>
+		<li><a href='<?php echo HTTP_ADMIN_PATH; ?>cms'>CMS Management</a></li>
+		<li class="active">Edit Content</li>
 	</ul>
 
 	<h1 class="page-header"><span class="glyphicon glyphicon glyphicon-pencil"></span> Edit Content</h1>

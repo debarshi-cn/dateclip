@@ -30,7 +30,7 @@ class Cms extends MY_Controller {
         $this->load->view('admin/includes/template', $data);
     }
 
-    public function edit($id = null){
+    public function edit($id = null) {
 
     	// if save button was clicked, get the data sent via post
     	if ($this->input->server('REQUEST_METHOD') === 'POST') {
@@ -79,33 +79,7 @@ class Cms extends MY_Controller {
     	$this->load->view('admin/includes/template', $data);
     }
 
-    public function edit_action(){
-        $this->load->model('my_model');
-        $arr= array("id"=>htmlspecialchars($this->input->post('cid'), ENT_QUOTES, 'utf-8'),
-                    "title"=>htmlspecialchars($this->input->post('title'), ENT_QUOTES, 'utf-8'),
-                    "description"=>htmlspecialchars($this->input->post('description'), ENT_QUOTES, 'utf-8'),
-                    "name"=>htmlspecialchars($this->input->post('name'), ENT_QUOTES, 'utf-8'),
-                    "meta_keyword"=>htmlspecialchars($this->input->post('meta_keyword'), ENT_QUOTES, 'utf-8'),
-                    "meta_description"=>htmlspecialchars($this->input->post('meta_description'), ENT_QUOTES, 'utf-8')
-
-        );
-
-        if($this->my_model->set_update('cms',$arr,array('id'=>$this->input->post('cid'))))
-            $this->session->set_userdata(array('message'=>'Article update successfully..','message_type'=>'succ'));
-        else
-            $this->session->set_userdata(array('message'=>'Unable to update article..','message_type'=>'err'));
-        redirect('admin/cms');
-        exit;
-
-    }
-
-
-
-
-
-
-
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file cms.php */
+/* Location: ./application/controllers/admin/cms.php */
