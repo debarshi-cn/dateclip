@@ -118,18 +118,28 @@ class Home extends MY_Controller {
     				$user_info = $this->my_model_v2->get(1, 0, '', array('email' => $email));
 
     				$this->my_model_v2->initialize(array(
-    					'table_name' => 'user_password_log',
+    					'table_name' => 'admin_password_log',
     					'primary_key' => 'id'
     				));
 
     				$data_to_insert = array(
-    					'user_id' => $user_info->id,
+    					'admin_id' => $user_info->id,
     					'key' => md5(time()),
     					'create_date' => date('Y-m-d H:i:s')
     				);
+
     				$this->my_model_v2->insert($data_to_insert);
 
-    				// TODO: Send email alert
+    				//Send Email to reset admin password starts
+
+    				$activation_link = HTTP_ADMIN_PATH.'home/recover_password/'.$data_to_insert['key'];
+    				$to_email = $email;
+    				//$from_email = $from_email
+
+    				$this->load->library('email_function');
+    				$this->email_function->password_reset_email($activation_link, $to_email);
+
+    				//Send Email to reset admin password ends
 
     				$this->session->set_flashdata('message_type', 'success');
     				$this->session->set_flashdata('message', '<strong>Well done!</strong> Check your email to recover password.');
@@ -187,11 +197,11 @@ class Home extends MY_Controller {
     	if ($encrypted_string) {
 
     		$this->my_model_v2->initialize(array(
-    			'table_name' => 'user_password_log',
+    			'table_name' => 'admin_password_log',
     			'primary_key' => 'id'
     		));
 
-    		if ($this->my_model_v2->is_valid_data('user_password_log', array('key' => $encrypted_string, 'visited' => 0))) {
+    		if ($this->my_model_v2->is_valid_data('admin_password_log', array('key' => $encrypted_string, 'visited' => 0))) {
     			$data['user_info'] = $this->my_model_v2->get(1, 0, '', array('key' => $encrypted_string));
 
     			if (empty($data['user_info'])) {
@@ -209,7 +219,7 @@ class Home extends MY_Controller {
     				$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Allowed timelimit exceed.');
     				redirect(HTTP_ADMIN_PATH);
     			}
-    			$data['user_info']->enc_key = $this->encrypt->encode($data['user_info']->user_id);
+    			$data['user_info']->enc_key = $this->encrypt->encode($data['user_info']->admin_id);
     			$this->load->view('admin/recover_password', $data);
 
     		} else {
