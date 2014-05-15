@@ -22,6 +22,7 @@ class Home extends MY_Controller {
 
         parent::__construct();
         $this->load->library('form_validation');
+
     }
 
     /**
@@ -261,6 +262,10 @@ class Home extends MY_Controller {
     }
 
     public function profile() {
+
+        if (!$this->session->userdata('is_admin_login')) {
+            redirect('admin/home');
+        }
 
         $this->load->model('admin_model');
 
