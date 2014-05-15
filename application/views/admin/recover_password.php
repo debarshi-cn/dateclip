@@ -21,6 +21,17 @@
     <![endif]-->
 
 	<?php $this->load->view('admin/includes/js', $js_file); ?>
+	<script type="text/javascript">
+		function check_repass(input, passid) {
+
+	        if (input.value != jQuery('#'+passid).val()) {
+	            input.setCustomValidity('Password Must be Matching.');
+			} else {
+				// input is valid -- reset the error message
+				input.setCustomValidity('');
+			}
+		}
+	</script>
   </head>
 
   <body>
@@ -35,8 +46,8 @@
         	<?php echo $error;?>
         </div>
         <?php endif;?>
-        <input type="password" class="form-control" placeholder="New Password" name="new_pwd" required="required" autofocus>
-        <input type="password" class="form-control" placeholder="Retype Password" name="re_new_pwd" required="required" autofocus>
+        <input type="password" class="form-control" placeholder="New Password" name="new_pwd" id="new_pwd" required="required" oninput="check_repass(this, 're_new_pwd')" autofocus>
+        <input type="password" class="form-control" placeholder="Retype Password" name="re_new_pwd" id="re_new_pwd" required="required" oninput="check_repass(this, 'new_pwd')">
         <input type="hidden" name="key" value="<?php echo $user_info->enc_key;?>"  />
         <a href="<?php echo base_url(); ?>admin">Click here for login</a>
         <br /><br />

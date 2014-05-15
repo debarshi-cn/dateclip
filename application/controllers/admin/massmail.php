@@ -46,27 +46,22 @@ class Massmail extends MY_Controller {
     		//form validation
     		$this->form_validation->set_rules('subject', 'Subject', 'trim|required');
     		$this->form_validation->set_rules('body', 'Message', 'trim|required');
-    		/*$this->form_validation->set_rules('description', 'Description', 'required');
-    		$this->form_validation->set_rules('price', 'Price', 'required|numeric');
-    		$this->form_validation->set_rules('credit', 'Credit', 'required|integer');*/
 
     		$this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>', '</div>');
     		//if the form has passed through the validation
 
     		if ($this->form_validation->run()) {
 
-    			//print "<pre>"; print_r($_POST); print "</pre>";
-
-    			$names = $this->input->post('name');
-    			$gender = $this->input->post('gender');
-    			$location = $this->input->post('location');
-    			$age_start = $this->input->post('age_start');
-    			$age_end = $this->input->post('age_end');
+    			$names = htmlspecialchars($this->input->post('name'), ENT_QUOTES, 'utf-8');
+    			$gender = htmlspecialchars($this->input->post('gender'), ENT_QUOTES, 'utf-8');
+    			$location = htmlspecialchars($this->input->post('location'), ENT_QUOTES, 'utf-8');
+    			$age_start = htmlspecialchars($this->input->post('age_start'), ENT_QUOTES, 'utf-8');
+    			$age_end = htmlspecialchars($this->input->post('age_end'), ENT_QUOTES, 'utf-8');
     			$status = $this->input->post('status');
     			$dateclip = $this->input->post('dateclip');
 
-    			$subject = $this->input->post('subject');
-    			$body = $this->input->post('body');
+    			$subject = htmlspecialchars($this->input->post('subject'), ENT_QUOTES, 'utf-8');
+    			$body = htmlspecialchars($this->input->post('body'), ENT_QUOTES, 'utf-8');
     			$email = $this->input->post('email');
 
     			$where = " WHERE 1=1 ";

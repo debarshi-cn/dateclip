@@ -44,6 +44,16 @@
 			var content = jQuery("#deleteConfirmModal .modal-footer").html();
 			jQuery("#deleteConfirmModal .modal-footer").html('<form action="'+url+id+'" method="post">'+content+'</form>');
 		}
+
+		function check_repass(input, passid) {
+
+	        if (input.value != jQuery('#'+passid).val()) {
+	            input.setCustomValidity('Password Must be Matching.');
+			} else {
+				// input is valid -- reset the error message
+				input.setCustomValidity('');
+			}
+		}
 	</script>
   </head>
 <body>

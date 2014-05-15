@@ -130,11 +130,9 @@ class Home extends MY_Controller {
 
     				$this->my_model_v2->insert($data_to_insert);
 
-    				//Send Email to reset admin password starts
-
+    				// Send Email to reset admin password starts
     				$activation_link = HTTP_ADMIN_PATH.'home/recover_password/'.$data_to_insert['key'];
     				$to_email = $email;
-    				//$from_email = $from_email
 
     				$this->load->library('email_function');
     				$this->email_function->password_reset_email($activation_link, $to_email);
@@ -178,7 +176,6 @@ class Home extends MY_Controller {
 
         		$key = $this->input->post('key');
         		$id = $this->encrypt->decode($key);
-
         		$pwd = $this->_encrip_password($this->input->post('new_pwd'));
 
         		$this->my_model_v2->initialize(array(
@@ -187,6 +184,16 @@ class Home extends MY_Controller {
         		));
 
         		if ($this->my_model_v2->update($id, array('password' => $pwd))) {
+
+        			// Update the link status
+        			$this->my_model_v2->initialize(array(
+        					'table_name' => 'admin_password_log',
+        					'primary_key' => 'id'
+        			));
+
+        			$user_info = $this->my_model_v2->get(1, 0, '', array('key' => $encrypted_string, 'admin_id' => $id));
+        			$this->my_model_v2->update($user_info->id, array('visited' => 1));
+
         			$this->session->set_flashdata('message_type', 'success');
         			$this->session->set_flashdata('message', '<strong>Well done!</strong> Password sucessfully updated.');
         		}
@@ -208,9 +215,6 @@ class Home extends MY_Controller {
     				redirect(HTTP_ADMIN_PATH);
     			}
 
-    			// Update the link status
-    			$this->my_model_v2->update($data['user_info']->id, array('visited' => 1));
-
     			// Check for validity of the link (1 hr)
     			$time = strtotime($data['user_info']->create_date);
     			$now = time();
@@ -219,6 +223,7 @@ class Home extends MY_Controller {
     				$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Allowed timelimit exceed.');
     				redirect(HTTP_ADMIN_PATH);
     			}
+
     			$data['user_info']->enc_key = $this->encrypt->encode($data['user_info']->admin_id);
     			$this->load->view('admin/recover_password', $data);
 
