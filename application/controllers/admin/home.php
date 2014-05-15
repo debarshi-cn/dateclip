@@ -335,7 +335,6 @@ class Home extends MY_Controller {
                 }
 
             } //validation run
-            //redirect('/admin/home/profile/');
         }
 
 
