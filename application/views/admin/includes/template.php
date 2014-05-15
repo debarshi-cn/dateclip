@@ -37,6 +37,8 @@
 				jQuery("#userDetailsModal .modal-content").load(jQuery(this).attr('data-src'));
 			});
 
+			
+
 		});
 
 		function popup_confirm(url, id) {
