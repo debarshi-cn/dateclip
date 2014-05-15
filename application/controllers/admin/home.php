@@ -262,23 +262,6 @@ class Home extends MY_Controller {
 
     public function profile() {
 
-        $this->load->model('my_model_v2');
-        $this->my_model_v2->initialize(array(
-            'table_name' => 'admin',
-            'primary_key' => 'id'
-        ));
-
-        $data['page'] = 'profile';
-        $data['page_title'] = 'DateClip Admin Panel :: Update Profile';
-
-        $data['admin'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $this->session->userdata('id')));
-
-        $data['main_content'] = 'admin/profile/edit';
-        $this->load->view('admin/includes/template', $data);
-    }
-
-    public function update() {
-
         $this->load->model('admin_model');
 
         $this->load->model('my_model_v2');
@@ -287,11 +270,19 @@ class Home extends MY_Controller {
             'primary_key' => 'id'
         ));
 
+
         //if save button was clicked, get the data sent via post
         if ($this->input->server('REQUEST_METHOD') === 'POST')
         {
             //form validation
             $this->form_validation->set_rules('name', 'Full Name', 'required');
+
+            if ($this->input->post('password') != "") {
+                //echo 1;exit();
+                $this->form_validation->set_rules('new_pwd', 'New Password', 'trim|required|matches[re_pwd]');
+                $this->form_validation->set_rules('re_pwd', 'Retype Password', 'trim|required');
+            }
+
 
             $this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>', '</div>');
             //if the form has passed through the validation
@@ -304,9 +295,9 @@ class Home extends MY_Controller {
                 $new_password = $this->_encrip_password($this->input->post('re_pwd'));
 
                 // CHECK IF RE PASSWORD FIELD IS NOT BLANK
-                if($this->input->post('re_pwd') !=""){
+                if($this->input->post('re_pwd') != "") {
 
-                    if($this->admin_model->check_password($id, $old_password) == TRUE){
+                    if($this->admin_model->check_password($id, $old_password) == TRUE) {
                         
                         $data_to_store = array(
                             'password' => $new_password,
@@ -318,12 +309,15 @@ class Home extends MY_Controller {
                             $this->session->set_flashdata('message', '<strong>Well done!</strong> User successfully updated.');
                         }
 
-                    } else{
+                    } else {
                         //echo 1; exit;
                         $this->session->set_flashdata('message_type', 'danger');
                         $this->session->set_flashdata('message', '<strong>Oh snap!</strong> Wrong old password provided.');
                     }
-                } else{
+
+                    redirect('/admin/home/profile/');
+
+                } else {
 
                     $data_to_store = array(
                         'name' => $this->input->post('name')
@@ -332,17 +326,26 @@ class Home extends MY_Controller {
                     if ($this->my_model_v2->update($id, $data_to_store)) {
                         $this->session->set_flashdata('message_type', 'success');
                         $this->session->set_flashdata('message', '<strong>Well done!</strong> Profile successfully updated.');
-                    } else{
+                    } else {
                         $this->session->set_flashdata('message_type', 'danger');
                         $this->session->set_flashdata('message', '<strong>Oh snap!</strong> Change something and try again.');
                     }
+
+                    redirect('/admin/home/profile/');      
                 }
 
-                redirect('/admin/home/profile/');
-
             } //validation run
+            //redirect('/admin/home/profile/');
         }
 
+
+        $data['page'] = 'profile';
+        $data['page_title'] = 'DateClip Admin Panel :: Update Profile';
+
+        $data['admin'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $this->session->userdata('id')));
+
+        $data['main_content'] = 'admin/profile/edit';
+        $this->load->view('admin/includes/template', $data);
     }
 }
 
