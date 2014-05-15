@@ -16,7 +16,7 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li <?php echo $page == 'profile' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>profile">Profile</a></li>
+						<li <?php echo $page == 'profile' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>home/profile">Profile</a></li>
 						<li class="divider"></li>
 						<li><a href="<?php echo HTTP_ADMIN_PATH; ?>home/logout">Logout</a></li>
 					</ul>

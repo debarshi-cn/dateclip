@@ -85,7 +85,7 @@ class my_model_v2 extends CI_Model {
 		}
 	}
 
-	public function update($id = 0, $data = array()) {
+	public function update($id = 0, $data = array()) { 
 
 		$id = (int) $id;
 

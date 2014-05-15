@@ -78,6 +78,25 @@ class Admin_model extends CI_Model {
 			return false;
 		}
 	}
+
+	function check_password($id, $old_password) {
+		//echo $id."----".$password;exit;
+		$this->db->select('*');
+		$this->db->from('admin');
+		$this->db->where('id', $id);
+		$this->db->where('password', $old_password);
+		$query = $this->db->get();
+
+		if($query->num_rows() > 0){
+			return TRUE;
+		} else{
+
+			return FALSE;
+		}
+
+		//return $query->result_array();
+
+	}
 }
 
 /* End of file admin_model.php */
