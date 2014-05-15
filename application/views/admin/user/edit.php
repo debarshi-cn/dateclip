@@ -51,7 +51,7 @@
 
 		<div class="form-group has-feedback">
 	  		<label for="inputDOB">Date of Birth</label>
-	  		<input type="text" name="date_of_birth" class="form-control" id="inputDOB" placeholder="Date of birth" value="<?php echo $user[0]->date_of_birth;?>"> <span class="form-control-feedback glyphicon glyphicon-calendar"></span>
+	  		<input type="text" name="date_of_birth" class="form-control calender-control" id="inputDOB" placeholder="Date of birth" value="<?php echo $user[0]->date_of_birth;?>"> <span class="form-control-feedback glyphicon glyphicon-calendar"></span>
 	  	</div>
 
 	  	<div class="form-group">

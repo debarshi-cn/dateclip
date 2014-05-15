@@ -27,7 +27,7 @@
 				jQuery(".checkbox-item").prop('checked', this.checked);
 			});
 
-			jQuery("#inputDOB").datepicker({
+			jQuery(".calender-control").datepicker({
 				changeMonth: true,
 				changeYear: true,
 				dateFormat: 'yy-mm-dd'
