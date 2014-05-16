@@ -41,12 +41,12 @@
 		</div>
 
 	  	<h2><small><span class="glyphicon glyphicon-certificate"></span> Update Password</small></h2>
-	  	<p class="help-block">[ All the 3 fields are required for updating password. ]</p>
 
 	  	<div class="panel panel-default main" >
 			<div class="form-group">
 		  		<label for="inputPass">Current Password</label>
 		  		<input type="password" name="password" class="form-control" id="inputPass" placeholder="Current Password" value="">
+		  		<p class="help-block">[ All the 3 fields are required for updating password. ]</p>
 		  	</div>
 
 		  	<div class="form-group">
