@@ -14,7 +14,7 @@
     <ul class="nav nav-sidebar">
     	<li class="nav-sidebar-head">Reports</li>
     	<li <?php echo $page == 'report-dateclip' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>report/dateclip">Flagged DateClips</a></li>
-        <li><a href="">Flagged Messages</a></li>
+        <li <?php echo $page == 'report-message' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>report/message">Flagged Messages</a></li>
         <li><a href="">Finance Report</a></li>
         <li><a href="">Credit Report</a></li>
     </ul>

@@ -20,7 +20,6 @@ class Users extends MY_Controller {
     public function __construct() {
 
         parent::__construct();
-        //$this->load->model('user_model');
         $this->load->library('form_validation');
 
         if (!$this->session->userdata('is_admin_login')) {

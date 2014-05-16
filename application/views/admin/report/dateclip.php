@@ -22,7 +22,7 @@
 		<div class="panel panel-default inner-spacer" >
 			<div class="form-group">
 			    <div class="col-md-12">
-				  	<h2><small><span class="glyphicon glyphicon-search"></span> Search</small></h2>
+				  	<h2><small><span class="glyphicon glyphicon-search"></span> Search Flagged DateClips</small></h2>
 				</div>
 			</div>
 			<div class="form-group">
@@ -37,7 +37,7 @@
 			    </div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group has-feedback">
 			    <label for="inputDateFrom" class="col-sm-2 control-label">Date From</label>
 			    <div class="col-sm-4">
 			    	<input type="text" name="date_from" class="form-control calender-control" id="inputDateFrom" placeholder="Date From" value="<?php echo $search['date_from'];?>" /> <span class="form-control-feedback glyphicon glyphicon-calendar"></span>
@@ -60,14 +60,14 @@
 	</form>
 	<?php
 		$attributes = array('class' => 'form-inline', 'id' => 'user-status-form');
-		echo form_open(HTTP_ADMIN_PATH.'report/update_dateclip_status', $attributes);
+		echo form_open(HTTP_ADMIN_PATH.'report/dateclip_update_status', $attributes);
 	?>
 		<div class="row spacer-top spacer-bottom">
 			<div class="col-sm-8">
 				<select name="operation" class="form-control" id="inputOperation" required>
 					<option value="">Select Operation</option>
-				    <option value="active">Mark as Active</option>
-				    <option value="inactive">Mark as In-active</option>
+				    <option value="accepted">Mark as Accepted</option>
+				    <option value="rejected">Mark as Rejected</option>
 				</select>
 				<button type="submit" class="btn btn-success">Submit</button>
 			</div>
@@ -83,6 +83,7 @@
 		          		<th>Reported By</th>
 		          		<th>Date</th>
 		          		<th>Reason</th>
+		          		<th>Status</th>
 		          		<th>Action</th>
 		          	</tr>
 		        </thead>
@@ -95,11 +96,21 @@
 		            <?php foreach($list as $row) { ?>
 		            <tr>
 		            	<td><input type="checkbox" name="item_id[<?php echo $row->id;?>]" class="checkbox-item" value="Y"></td>
-
 		            	<td><a class="userModalButton" href="#" data-src="<?php echo HTTP_ADMIN_PATH; ?>users/details/<?php echo $row->user_id;?>" data-toggle="modal" data-target="#userDetailsModal"><?php echo $row->user_name;?></a></td>
 		            	<td><a class="userModalButton" href="#" data-src="<?php echo HTTP_ADMIN_PATH; ?>users/details/<?php echo $row->reporter_id;?>" data-toggle="modal" data-target="#userDetailsModal"><?php echo $row->reporter_name;?></a></td>
 		            	<td><?php echo date("m/d/Y h:i a",strtotime($row->create_date));?></td>
 		            	<td><?php echo $row->flag;?> <?php echo ($row->other)?"- ".$row->other:'';?></td>
+		            	<td>
+		            	<?php
+		            		if ($row->status == 'accepted') {
+		            			echo '<span class="label label-success">Flag Accepted</span>';
+		            		} else if ($row->status == 'rejected') {
+		            			echo '<span class="label label-danger">Flag Rejected</span>';
+		            		} else {
+		            			echo '<span class="label label-primary">Pending</span>';
+		            		}
+		            	?>
+		            	</td>
 		            	<td>
 		            		<a class="btn btn-info btn-xs userModalButton" href="#" data-src="<?php echo HTTP_ADMIN_PATH; ?>users/details/<?php echo $row->dateclip_id;?>" data-toggle="modal" data-target="#userDetailsModal">
 		            			<span class="glyphicon glyphicon-edit"></span> View Clip
