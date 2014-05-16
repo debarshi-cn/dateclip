@@ -149,9 +149,8 @@ class Users extends MY_Controller {
     	}
 
     	//fetch sql data into arrays
-    	$data['count_users'] = count($this->my_model_v2->get(null, null, null, $data['search']));
+    	$config['total_rows'] = $data['count_users'] = count($this->my_model_v2->get(null, null, null, $data['search']));
     	$data['list'] = $this->my_model_v2->get($config['per_page'], $limit_end, array($sort => $sort_dir), $data['search']);
-    	$config['total_rows'] = $data['count_users'];
 
 
     	//initializate the panination helper

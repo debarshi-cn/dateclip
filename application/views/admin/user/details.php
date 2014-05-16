@@ -15,7 +15,7 @@
 
 		    <label class="col-sm-2 control-label">Birth Date:</label>
 		    <div class="col-sm-3">
-		    	<p class="form-control-static"><?php echo $user[0]->date_of_birth;?></p>
+		    	<p class="form-control-static"><?php echo ($user[0]->date_of_birth)?date("m/d/Y",strtotime($user[0]->date_of_birth)):"N/A";?></p>
 		    </div>
 
 		    <label class="col-sm-2 control-label">Status:</label>
@@ -32,11 +32,11 @@
 		    </div>
 		</div>
 		<div class="row spacer-bottom">
-			<label class="col-sm-3 control-label"><?php echo $user[0]->location;?></label>
+			<label class="col-sm-3 control-label"><?php echo ($user[0]->location)?$user[0]->location:"N/A";?></label>
 
 		    <label class="col-sm-2 control-label">Active Since:</label>
 		    <div class="col-sm-3">
-		    	<p class="form-control-static"><?php echo $user[0]->create_date;?></p>
+		    	<p class="form-control-static"><?php echo date("m/d/Y h:i a",strtotime($user[0]->create_date));?></p>
 		    </div>
 
 		    <label class="col-sm-2 control-label">PP available:</label>
