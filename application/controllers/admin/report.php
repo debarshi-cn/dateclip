@@ -345,9 +345,11 @@ class Report extends MY_Controller {
 
     	// Search values
     	$searchName = $this->input->post('name');
-    	$searchReported = $this->input->post('reported');
+    	$searchTransaction = $this->input->post('transaction');
     	$searchDateFrom = $this->input->post('date_from');
     	$searchDateTo = $this->input->post('date_to');
+    	$searchPriceFrom = $this->input->post('price_from');
+    	$searchPriceTo = $this->input->post('price_to');
 
     	if ($searchName !== false) {
     		$filter_session_data['name_m_report'] = $searchName;
@@ -355,10 +357,10 @@ class Report extends MY_Controller {
     		$searchName = $this->session->userdata('name_m_report');
     	}
 
-    	if ($searchReported !== false) {
-    		$filter_session_data['reported_m_report'] = $searchReported;
+    	if ($searchTransaction !== false) {
+    		$filter_session_data['transaction_m_report'] = $searchTransaction;
     	} else {
-    		$searchReported = $this->session->userdata('reported_m_report');
+    		$searchTransaction = $this->session->userdata('transaction_m_report');
     	}
 
     	if ($searchDateFrom !== false) {
@@ -373,10 +375,24 @@ class Report extends MY_Controller {
     		$searchDateTo = $this->session->userdata('date_to_m_report');
     	}
 
+    	if ($searchPriceFrom !== false) {
+    		$filter_session_data['price_from_m_report'] = $searchPriceFrom;
+    	} else {
+    		$searchPriceFrom = $this->session->userdata('price_from_m_report');
+    	}
+
+    	if ($searchPriceTo !== false) {
+    		$filter_session_data['price_to_m_report'] = $searchPriceTo;
+    	} else {
+    		$searchPriceTo = $this->session->userdata('price_to_m_report');
+    	}
+
     	$data['search']['name'] = $searchName;
-    	$data['search']['reported'] = $searchReported;
+    	$data['search']['transaction'] = $searchTransaction;
     	$data['search']['date_from'] = $searchDateFrom;
     	$data['search']['date_to'] = $searchDateTo;
+    	$data['search']['price_from'] = $searchPriceFrom;
+    	$data['search']['price_to'] = $searchPriceTo;
 
     	// Save session data in the session
     	if (isset($filter_session_data)) {
@@ -385,17 +401,19 @@ class Report extends MY_Controller {
 
     	if ($this->uri->segment(4) == "reset") {
     		$filter = array('name_m_report' => '',
-    				'reported_m_report' => '',
-    				'date_from_m_report' => '',
-    				'date_to_m_report' => ''
-    		);
+    						'transaction_m_report' => '',
+    						'date_from_m_report' => '',
+    						'date_to_m_report' => '',
+    						'price_from_m_report' => '',
+    						'price_to_m_report' => ''
+    					);
 
     		$this->session->set_userdata($filter);
     		redirect('/admin/report/finance/');
     	}
 
     	//fetch sql data into arrays
-    	$data['list'] = $this->report_model->get_message_flag_report($data['search']);
+    	$data['list'] = $this->report_model->get_finance_report($data['search']);
 
     	$data['page'] = 'report-finance';
     	$data['page_title'] = 'DateClip Admin Panel :: Reports &raquo; Finance';

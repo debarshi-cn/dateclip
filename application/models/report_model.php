@@ -134,6 +134,65 @@ class Report_model extends CI_Model {
 			return $query->num_rows();
 		}
 	}
+
+
+	/**
+	 * Get Flagged DateClips
+	 * @param array $search
+	 * @param int $limit
+	 * @param int $offset
+	 * @param string $return
+	 * @return array
+	 */
+	public function get_finance_report($search = array()) {
+
+		$where = "WHERE 1=1 ";
+
+		if ($search['name'] <> "") {
+			$where .= " AND user.full_name like '%".$search['name']."%' ";
+		}
+
+		if ($search['transaction'] <> "") {
+			$where .= " AND user_package_log.transaction_id like '%".$search['transaction']."%' ";
+		}
+
+		if ($search['date_from'] <> "") {
+			$where .= " AND user_package_log.purchase_date >= '".$search['date_from']."' ";
+		}
+
+		if ($search['date_to'] <> "") {
+			$where .= " AND user_package_log.purchase_date <= '".$search['date_to']."' ";
+		}
+
+		if ($search['price_from'] <> "") {
+			$where .= " AND package.price >= '".$search['price_from']."' ";
+		}
+
+		if ($search['price_to'] <> "") {
+			$where .= " AND package.price <= '".$search['price_to']."' ";
+		}
+
+		//print "<pre>"; print_r($search); print "</pre>";
+		$sql = "SELECT
+					user.id AS user_id,
+					user.full_name,
+					user_package_log.transaction_id,
+					user_package_log.purchase_date,
+					user_package_log.status,
+					package.name AS package_name,
+					package.type AS package_type,
+					package.price AS package_price,
+					package.id AS package_id
+				FROM user_package_log
+				INNER JOIN user
+					ON user_package_log.user_id = user.id
+				INNER JOIN package
+					ON user_package_log.package_id = package.id
+				".$where."";
+
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
 }
 
 /* End of file report_model.php */
