@@ -337,6 +337,75 @@ class Report extends MY_Controller {
 
     /**
      *
+     */
+    public function finance() {
+
+    	$data = array();
+    	$page = $this->uri->segment(5);
+
+    	// Search values
+    	$searchName = $this->input->post('name');
+    	$searchReported = $this->input->post('reported');
+    	$searchDateFrom = $this->input->post('date_from');
+    	$searchDateTo = $this->input->post('date_to');
+
+    	if ($searchName !== false) {
+    		$filter_session_data['name_m_report'] = $searchName;
+    	} else {
+    		$searchName = $this->session->userdata('name_m_report');
+    	}
+
+    	if ($searchReported !== false) {
+    		$filter_session_data['reported_m_report'] = $searchReported;
+    	} else {
+    		$searchReported = $this->session->userdata('reported_m_report');
+    	}
+
+    	if ($searchDateFrom !== false) {
+    		$filter_session_data['date_from_m_report'] = $searchDateFrom;
+    	} else {
+    		$searchDateFrom = $this->session->userdata('date_from_m_report');
+    	}
+
+    	if ($searchDateTo !== false) {
+    		$filter_session_data['date_to_m_report'] = $searchDateTo;
+    	} else {
+    		$searchDateTo = $this->session->userdata('date_to_m_report');
+    	}
+
+    	$data['search']['name'] = $searchName;
+    	$data['search']['reported'] = $searchReported;
+    	$data['search']['date_from'] = $searchDateFrom;
+    	$data['search']['date_to'] = $searchDateTo;
+
+    	// Save session data in the session
+    	if (isset($filter_session_data)) {
+    		$this->session->set_userdata($filter_session_data);
+    	}
+
+    	if ($this->uri->segment(4) == "reset") {
+    		$filter = array('name_m_report' => '',
+    				'reported_m_report' => '',
+    				'date_from_m_report' => '',
+    				'date_to_m_report' => ''
+    		);
+
+    		$this->session->set_userdata($filter);
+    		redirect('/admin/report/finance/');
+    	}
+
+    	//fetch sql data into arrays
+    	$data['list'] = $this->report_model->get_message_flag_report($data['search']);
+
+    	$data['page'] = 'report-finance';
+    	$data['page_title'] = 'DateClip Admin Panel :: Reports &raquo; Finance';
+
+    	$data['main_content'] = 'admin/report/finance';
+    	$this->load->view('admin/includes/template', $data);
+    }
+
+    /**
+     *
      * @param unknown_type $id
      */
     public function details($id) {
