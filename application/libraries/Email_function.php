@@ -59,15 +59,16 @@ class Email_function {
 
     public function email_to_user($to_email = NULL, $name = NULL, $subject = NULL, $message = NULL) {
 
-        $this->CI->email->from('your@example.com', 'Your Name');
+    	$config['mailtype'] = 'html';
+    	$this->CI->email->initialize($config);
+
+        $this->CI->email->from('no-reply@dateclip.com', 'DateClip.com');
         $this->CI->email->to($to_email);
 
         $this->CI->email->subject($subject);
-
         $this->CI->email->message($message);
 
         $this->CI->email->send();
-
     }
 
 

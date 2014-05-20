@@ -61,7 +61,7 @@ class Massmail extends MY_Controller {
     			$dateclip = $this->input->post('dateclip');
 
     			$subject = htmlspecialchars($this->input->post('subject'), ENT_QUOTES, 'utf-8');
-    			$body = htmlspecialchars($this->input->post('body'), ENT_QUOTES, 'utf-8');
+    			$body = $this->input->post('body');
     			$email = $this->input->post('email');
 
     			$where = " WHERE 1=1 ";
