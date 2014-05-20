@@ -5,7 +5,7 @@
 		<li class="active">Finance</li>
 	</ol>
 
-	<h1 class="page-header"><span class="glyphicon glyphicon-inbox"></span> Finance Report</h1>
+	<h1 class="page-header"><span class="glyphicon glyphicon-list-alt"></span> Finance Report</h1>
 
 	<?php
 		if($this->session->flashdata('message_type')) {
@@ -82,9 +82,9 @@
 			  		<span class="sr-only">Toggle Dropdown</span>
 			  	</button>
 			  	<ul class="dropdown-menu" role="menu">
-			  		<li><a href="#">Print</a></li>
+			  		<li><a href="javascript:window.print();">Print</a></li>
 			  		<li class="divider"></li>
-			  		<li><a href="#">CSV</a></li>
+			  		<li><a href="<?php echo HTTP_ADMIN_PATH.'report/finance/csv';?>">CSV</a></li>
 			  	</ul>
 			</div>
 		</div>
@@ -112,7 +112,7 @@
 		            <?php } ?>
 		            <?php foreach($list as $row) { ?>
 		            <tr>
-		            	<td><?php echo $row->full_name;?></td>
+		            	<td><a class="userModalButton" href="#" data-src="<?php echo HTTP_ADMIN_PATH; ?>users/details/<?php echo $row->user_id;?>" data-toggle="modal" data-target="#userDetailsModal"><?php echo $row->full_name;?></a></td>
 		            	<td><?php echo $row->transaction_id;?></td>
 		            	<td><?php echo date("m/d/Y h:i a",strtotime($row->purchase_date));?></td>
 		            	<td><?php echo $row->package_name;?></td>
@@ -124,4 +124,16 @@
 		    </table>
 		</div>
 	</form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg"">
+		<div class="modal-content">
+			<div class="modal-body">
+				<!-- Remote data loads here -->
+				<span class="glyphicon glyphicon-refresh"></span> Loading please wait ...
+			</div>
+		</div>
+	</div>
 </div>

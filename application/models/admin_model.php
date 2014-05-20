@@ -80,22 +80,55 @@ class Admin_model extends CI_Model {
 	}
 
 	function check_password($id, $old_password) {
-		//echo $id."----".$password;exit;
+
 		$this->db->select('*');
 		$this->db->from('admin');
 		$this->db->where('id', $id);
 		$this->db->where('password', $old_password);
 		$query = $this->db->get();
 
-		if($query->num_rows() > 0){
+		if ($query->num_rows() > 0) {
 			return TRUE;
-		} else{
+		} else {
 
 			return FALSE;
 		}
+	}
 
-		//return $query->result_array();
+	function get_dashboard_data() {
 
+		$data = array();
+
+		// Get the Total Profile
+		$sql_result = "SELECT COUNT(id) AS total_profile FROM user";
+		$query = $this->db->query($sql_result);
+		$total_result = $query->row();
+
+		$data['total_profile'] = $total_result->total_profile;
+
+
+		// Get the Male Profile
+		$sql_male = "SELECT COUNT(id) AS male_profile FROM user WHERE gender = 'M' ";
+		$query = $this->db->query($sql_male);
+		$total_male = $query->row();
+
+		$data['male_profile'] = $total_male->male_profile;
+
+		// Get the Female Profile
+		$sql_female = "SELECT COUNT(id) AS female_profile FROM user WHERE gender = 'F' ";
+		$query = $this->db->query($sql_female);
+		$total_female = $query->row();
+
+		$data['female_profile'] = $total_female->female_profile;
+
+		// Get the User has dateclip
+		$sql_has_dateclip = "SELECT COUNT(user.id) AS has_dateclip FROM user INNER JOIN dateclip ON user.id = dateclip.user_id AND dateclip.deleted IS NULL GROUP BY user.id ";
+		$query = $this->db->query($sql_has_dateclip);
+		$total_has_dateclip = $query->row();
+
+		$data['has_dateclip'] = $total_has_dateclip->has_dateclip;
+
+		return $data;
 	}
 }
 

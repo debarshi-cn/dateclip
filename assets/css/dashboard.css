@@ -23,7 +23,7 @@ body {
  */
 
 /* Hide for mobile, show later */
-.sidebar {
+.sidebar, .optional {
   	display: none;
 }
 
@@ -42,7 +42,11 @@ body {
     border-right: 1px solid #eee;
   }
 }
-
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+	.optional {
+	  	display: block;
+	}
+}
 /* Sidebar navigation */
 .nav-sidebar {
   	margin-bottom: 5%;
@@ -82,8 +86,11 @@ body {
 .main .page-header {
   	margin-top: 0;
 }
-
-
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+	.main .page-header {
+	  	margin-top: 4%;
+	}
+}
 /*
  * Placeholder dashboard ideas
  */

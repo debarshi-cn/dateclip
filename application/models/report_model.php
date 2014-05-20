@@ -148,27 +148,31 @@ class Report_model extends CI_Model {
 
 		$where = "WHERE 1=1 ";
 
-		if ($search['name'] <> "") {
+		if (isset($search['user_id']) && $search['user_id'] <> "") {
+			$where .= " AND user.id = '".$search['user_id']."' ";
+		}
+
+		if (isset($search['name']) && $search['name'] <> "") {
 			$where .= " AND user.full_name like '%".$search['name']."%' ";
 		}
 
-		if ($search['transaction'] <> "") {
+		if (isset($search['transaction']) && $search['transaction'] <> "") {
 			$where .= " AND user_package_log.transaction_id like '%".$search['transaction']."%' ";
 		}
 
-		if ($search['date_from'] <> "") {
+		if (isset($search['date_from']) && $search['date_from'] <> "") {
 			$where .= " AND user_package_log.purchase_date >= '".$search['date_from']."' ";
 		}
 
-		if ($search['date_to'] <> "") {
+		if (isset($search['date_to']) && $search['date_to'] <> "") {
 			$where .= " AND user_package_log.purchase_date <= '".$search['date_to']."' ";
 		}
 
-		if ($search['price_from'] <> "") {
+		if (isset($search['price_from']) && $search['price_from'] <> "") {
 			$where .= " AND package.price >= '".$search['price_from']."' ";
 		}
 
-		if ($search['price_to'] <> "") {
+		if (isset($search['price_to']) && $search['price_to'] <> "") {
 			$where .= " AND package.price <= '".$search['price_to']."' ";
 		}
 
@@ -182,6 +186,7 @@ class Report_model extends CI_Model {
 					package.name AS package_name,
 					package.type AS package_type,
 					package.price AS package_price,
+					package.credit AS package_credit,
 					package.id AS package_id
 				FROM user_package_log
 				INNER JOIN user
@@ -189,6 +194,66 @@ class Report_model extends CI_Model {
 				INNER JOIN package
 					ON user_package_log.package_id = package.id
 				".$where."";
+
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+
+
+	/**
+	 * Get Flagged DateClips
+	 * @param array $search
+	 * @param int $limit
+	 * @param int $offset
+	 * @param string $return
+	 * @return array
+	 */
+	public function get_credit_report($search = array()) {
+
+		$where = "WHERE 1=1 ";
+
+		if (isset($search['user_id']) && $search['user_id'] <> "") {
+			$where .= " AND user.id = '".$search['user_id']."' ";
+		}
+
+		if (isset($search['name']) && $search['name'] <> "") {
+			$where .= " AND user.full_name like '%".$search['name']."%' ";
+		}
+
+		if (isset($search['transaction']) && $search['transaction'] <> "") {
+			$where .= " AND user_package_log.transaction_id like '%".$search['transaction']."%' ";
+		}
+
+		if (isset($search['date_from']) && $search['date_from'] <> "") {
+			$where .= " AND user_package_log.purchase_date >= '".$search['date_from']."' ";
+		}
+
+		if (isset($search['date_to']) && $search['date_to'] <> "") {
+			$where .= " AND user_package_log.purchase_date <= '".$search['date_to']."' ";
+		}
+
+		if (isset($search['credit_from']) && $search['credit_from'] <> "") {
+			$where .= " AND user.credit >= '".$search['credit_from']."' ";
+		}
+
+		if (isset($search['credit_to']) && $search['credit_to'] <> "") {
+			$where .= " AND user.credit <= '".$search['credit_to']."' ";
+		}
+
+
+		$sql = "SELECT
+		user.id AS user_id,
+		user.full_name,
+		user.email,
+		user.credit,
+		user_package_log.transaction_id,
+		user_package_log.purchase_date,
+		user_package_log.status
+		FROM user_package_log
+		INNER JOIN user
+		ON user_package_log.user_id = user.id
+		".$where."
+		GROUP BY user_id";
 
 		$query = $this->db->query($sql);
 		return $query->result();
