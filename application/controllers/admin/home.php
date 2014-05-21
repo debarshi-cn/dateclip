@@ -67,7 +67,7 @@ class Home extends MY_Controller {
 
             	if($is_valid_details = $this->Admin_model->validate($email, $this->_encrip_password($password)))
             	{
-            		$data = array(
+                    $data = array(
             			'id' => $is_valid_details[0]['id'],
             			'name' => $is_valid_details[0]['name'],
             			'email' => $is_valid_details[0]['email'],
@@ -93,7 +93,7 @@ class Home extends MY_Controller {
      *  Admin Forgot Password
      */
     function forgot_password() {
-
+        //echo 1;
     	$this->load->model('my_model_v2');
         $this->my_model_v2->initialize(array(
         	'table_name' => 'admin',
