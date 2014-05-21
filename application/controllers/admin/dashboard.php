@@ -29,6 +29,10 @@ class Dashboard extends MY_Controller {
 
     public function index() {
 
+    	$this->load->model('Admin_model');
+    	$data['dashboard'] = $this->Admin_model->get_dashboard_data();
+
+
     	$data['page'] = 'dashboard';
         $data['page_title'] = 'DateClip Admin Panel :: Dashboard';
 

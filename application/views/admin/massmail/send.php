@@ -6,6 +6,17 @@
 
 	<h1 class="page-header"><span class="glyphicon glyphicon-envelope"></span> Send Mass Mail</h1>
 		<?php
+			if($this->session->flashdata('message_type')) {
+				if($this->session->flashdata('message')) {
+
+					echo '<div class="alert alert-'.$this->session->flashdata('message_type').' alert-dismissable">';
+					echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+					echo $this->session->flashdata('message');
+					echo '</div>';
+				}
+			}
+		?>
+		<?php
 			//form validation
 			echo validation_errors();
 

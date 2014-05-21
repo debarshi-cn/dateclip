@@ -10,6 +10,7 @@
 
     <?php $this->load->view('admin/includes/css', $css_file); ?>
     <link rel="stylesheet" type="text/css" href="<?php echo HTTP_CSS_PATH; ?>bootstrap-wysihtml5.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="<?php echo HTTP_CSS_PATH; ?>print.css" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,7 +38,7 @@
 				jQuery("#userDetailsModal .modal-content").load(jQuery(this).attr('data-src'));
 			});
 
-			
+
 
 		});
 

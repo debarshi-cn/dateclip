@@ -32,40 +32,43 @@ class Email_function {
 
     public function password_reset_email($activation_link = NULL, $to_email = NULL) {
 
-        //echo $activation_link."---".$to_email;exit();
+    	$config['mailtype'] = 'html';
+    	$this->CI->email->initialize($config);
 
-        $this->CI->email->from('your@example.com', 'Your Name');
+        $this->CI->email->from('no-reply@dateclip.com', 'DateClip.com');
         $this->CI->email->to($to_email);
-        //$this->email->cc('another@another-example.com');
-        //$this->email->bcc('them@their-example.com');
 
-        $this->CI->email->subject('Account activation link');
+        $this->CI->email->subject('DateClip - Password Reset');
 
-        $message = "";
-        $message .= "<p>Please click link to reset your password.</p>";
-                
-        $message .= "<a href='".$activation_link."' >test</a>";
+        $message = "<p>Hello, </p>";
+        $message .= "<p>A password reset request has been submitted on your behalf.</p>";
+        $message .= "<p>If you feel that this has been done in error, delete and disregard this email.
+        				Your account is still secure and no one has been given access to it.
+        				It is not locked and your password has not been reset.
+        				Someone could have mistakenly entered your email address. </p>";
+        $message .= "<p>Follow the link below to login and change your password. </p>";
 
+        $message .= "<a href='".$activation_link."' >".$activation_link."</a>";
+        $message .= "<p><i>DateClip.com Team</i></p>";
         //echo $message;
 
         $this->CI->email->message($message);
-
         $this->CI->email->send();
         //echo $this->CI->email->print_debugger();exit();
-        
     }
 
     public function email_to_user($to_email = NULL, $name = NULL, $subject = NULL, $message = NULL) {
 
-        $this->CI->email->from('your@example.com', 'Your Name');
+    	$config['mailtype'] = 'html';
+    	$this->CI->email->initialize($config);
+
+        $this->CI->email->from('no-reply@dateclip.com', 'DateClip.com');
         $this->CI->email->to($to_email);
 
         $this->CI->email->subject($subject);
-
         $this->CI->email->message($message);
 
         $this->CI->email->send();
-        
     }
 
 

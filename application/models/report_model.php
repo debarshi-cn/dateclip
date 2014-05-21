@@ -133,8 +133,139 @@ class Report_model extends CI_Model {
 		} else {
 			return $query->num_rows();
 		}
+<<<<<<< HEAD
 	}
 }
 
 /* End of file report_model.php */
+=======
+	}
+
+
+	/**
+	 * Get Flagged DateClips
+	 * @param array $search
+	 * @param int $limit
+	 * @param int $offset
+	 * @param string $return
+	 * @return array
+	 */
+	public function get_finance_report($search = array()) {
+
+		$where = "WHERE 1=1 ";
+
+		if (isset($search['user_id']) && $search['user_id'] <> "") {
+			$where .= " AND user.id = '".$search['user_id']."' ";
+		}
+
+		if (isset($search['name']) && $search['name'] <> "") {
+			$where .= " AND user.full_name like '%".$search['name']."%' ";
+		}
+
+		if (isset($search['transaction']) && $search['transaction'] <> "") {
+			$where .= " AND user_package_log.transaction_id like '%".$search['transaction']."%' ";
+		}
+
+		if (isset($search['date_from']) && $search['date_from'] <> "") {
+			$where .= " AND user_package_log.purchase_date >= '".$search['date_from']."' ";
+		}
+
+		if (isset($search['date_to']) && $search['date_to'] <> "") {
+			$where .= " AND user_package_log.purchase_date <= '".$search['date_to']."' ";
+		}
+
+		if (isset($search['price_from']) && $search['price_from'] <> "") {
+			$where .= " AND package.price >= '".$search['price_from']."' ";
+		}
+
+		if (isset($search['price_to']) && $search['price_to'] <> "") {
+			$where .= " AND package.price <= '".$search['price_to']."' ";
+		}
+
+		//print "<pre>"; print_r($search); print "</pre>";
+		$sql = "SELECT
+					user.id AS user_id,
+					user.full_name,
+					user_package_log.transaction_id,
+					user_package_log.purchase_date,
+					user_package_log.status,
+					package.name AS package_name,
+					package.type AS package_type,
+					package.price AS package_price,
+					package.credit AS package_credit,
+					package.id AS package_id
+				FROM user_package_log
+				INNER JOIN user
+					ON user_package_log.user_id = user.id
+				INNER JOIN package
+					ON user_package_log.package_id = package.id
+				".$where."";
+
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+
+
+	/**
+	 * Get Flagged DateClips
+	 * @param array $search
+	 * @param int $limit
+	 * @param int $offset
+	 * @param string $return
+	 * @return array
+	 */
+	public function get_credit_report($search = array()) {
+
+		$where = "WHERE 1=1 ";
+
+		if (isset($search['user_id']) && $search['user_id'] <> "") {
+			$where .= " AND user.id = '".$search['user_id']."' ";
+		}
+
+		if (isset($search['name']) && $search['name'] <> "") {
+			$where .= " AND user.full_name like '%".$search['name']."%' ";
+		}
+
+		if (isset($search['transaction']) && $search['transaction'] <> "") {
+			$where .= " AND user_package_log.transaction_id like '%".$search['transaction']."%' ";
+		}
+
+		if (isset($search['date_from']) && $search['date_from'] <> "") {
+			$where .= " AND user_package_log.purchase_date >= '".$search['date_from']."' ";
+		}
+
+		if (isset($search['date_to']) && $search['date_to'] <> "") {
+			$where .= " AND user_package_log.purchase_date <= '".$search['date_to']."' ";
+		}
+
+		if (isset($search['credit_from']) && $search['credit_from'] <> "") {
+			$where .= " AND user.credit >= '".$search['credit_from']."' ";
+		}
+
+		if (isset($search['credit_to']) && $search['credit_to'] <> "") {
+			$where .= " AND user.credit <= '".$search['credit_to']."' ";
+		}
+
+
+		$sql = "SELECT
+		user.id AS user_id,
+		user.full_name,
+		user.email,
+		user.credit,
+		user_package_log.transaction_id,
+		user_package_log.purchase_date,
+		user_package_log.status
+		FROM user_package_log
+		INNER JOIN user
+		ON user_package_log.user_id = user.id
+		".$where."
+		GROUP BY user_id";
+
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+}
+
+/* End of file report_model.php */
+>>>>>>> a6e449e8a61c0ab47f0277b9bbd3324400abecc2
 /* Location: ./application/models/report_model.php */

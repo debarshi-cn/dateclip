@@ -123,7 +123,7 @@ class Users extends MY_Controller {
     	$this->load->library('pagination');
 
     	//pagination settings
-    	$config['per_page'] = 2;
+    	$config['per_page'] = 10;
     	$config['base_url'] = base_url().'admin/users/index';
     	$config['use_page_numbers'] = TRUE;
     	$config['num_links'] = 20;
@@ -311,6 +311,7 @@ class Users extends MY_Controller {
      */
     public function details($id) {
 
+    	// Get the user details
     	$data['user'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
 
     	// Check for actual user
@@ -319,6 +320,10 @@ class Users extends MY_Controller {
     		$this->load->view('admin/user/details', $data);
     		return;
     	}
+
+    	// Get the transaction list
+    	$this->load->model('report_model');
+    	$data['list'] = $this->report_model->get_finance_report(array('user_id' => $id));
 
     	$this->load->view('admin/user/details', $data);
     }

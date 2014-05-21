@@ -53,7 +53,7 @@ class Massmail extends MY_Controller {
     		if ($this->form_validation->run()) {
 
     			$names = htmlspecialchars($this->input->post('name'), ENT_QUOTES, 'utf-8');
-    			$gender = htmlspecialchars($this->input->post('gender'), ENT_QUOTES, 'utf-8');
+    			$gender = $this->input->post('gender');
     			$location = htmlspecialchars($this->input->post('location'), ENT_QUOTES, 'utf-8');
     			$age_start = htmlspecialchars($this->input->post('age_start'), ENT_QUOTES, 'utf-8');
     			$age_end = htmlspecialchars($this->input->post('age_end'), ENT_QUOTES, 'utf-8');
@@ -61,12 +61,12 @@ class Massmail extends MY_Controller {
     			$dateclip = $this->input->post('dateclip');
 
     			$subject = htmlspecialchars($this->input->post('subject'), ENT_QUOTES, 'utf-8');
-    			$body = htmlspecialchars($this->input->post('body'), ENT_QUOTES, 'utf-8');
+    			$body = $this->input->post('body');
     			$email = $this->input->post('email');
 
     			$where = " WHERE 1=1 ";
 
-    			if ($names <> "") {
+    			if (isset($names) && $names <> "") {
     				$users = explode(",", $names);
 
     				foreach ($users as $user_str) {
@@ -80,14 +80,14 @@ class Massmail extends MY_Controller {
     			}
 
     			// If Searched by Username
-    			if (!empty($user_id)) {
+    			if (isset($user_id) && !empty($user_id)) {
 
     				$idin = implode(',', $user_id);
     				$where .= " AND `id` IN (".$idin.") ";
     			}
 
     			// If Searched by Gender
-    			if (!empty($gender)) {
+    			if (isset($gender) && !empty($gender)) {
 
     				$genderin = "";
     				foreach ($gender as $gen) {
@@ -98,29 +98,29 @@ class Massmail extends MY_Controller {
     			}
 
     			// If Searched by Location
-    			if ($location <> "") {
+    			if (isset($location) && $location <> "") {
     				$where .= " AND location like '%".$location."%' ";
     			}
 
     			// Search by Status
-    			if (!empty($status)) {
+    			if (isset($status) && !empty($status)) {
 
     				$statusin = implode(',', $status);
     				$where .= " AND `status` IN (".$statusin.") ";
     			}
 
     			// Search by DateClip
-    			if ($dateclip <> "") {
+    			if (isset($dateclip) && $dateclip <> "") {
     				//$where .= " AND location like '%".$location."%' ";
     			}
 
     			// Search by Start Age
-    			if ($age_start <> "") {
+    			if (isset($age_start) && $age_start <> "") {
     				$where .= " AND date_of_birth <= NOW() - INTERVAL ".$age_start." YEAR ";
     			}
 
     			// Search by End Age
-    			if ($age_end <> "") {
+    			if (isset($age_end) && $age_end <> "") {
     				$where .= " AND date_of_birth >= NOW() - INTERVAL ".$age_end." YEAR ";
     			}
 
@@ -149,7 +149,7 @@ class Massmail extends MY_Controller {
     			$mail_counter = 0;
 
     			foreach ($user_data as $user_obj) {
-    				echo $user_obj->email;
+    				//echo $user_obj->email."<br>";
 
     				$this->my_model_v2->initialize(array(
     					'table_name' => 'mass_mailing_log',
@@ -166,12 +166,10 @@ class Massmail extends MY_Controller {
 
     					// If email need to be sent
     					if ($email == "Y") {
-    						//$this->load->library('email_function');
-    						//$this->email_function->email_to_user($user_obj->email, $user_obj->full_name, $subject, $body);
+    						$this->load->library('email_function');
+    						$this->email_function->email_to_user($user_obj->email, $user_obj->full_name, $subject, $body);
     					}
     				}
-
-
     			}
 
     			if ($mail_counter > 0) {

@@ -55,54 +55,29 @@
 			    		<tr>
 			          		<th>Date</th>
 			          		<th>Package</th>
+			          		<th>Type</th>
 			          		<th>Transaction ID</th>
 			          		<th>Price</th>
 			          		<th>Credit</th>
 			          	</tr>
 			        </thead>
 			        <tbody>
+			        <?php if (count($list) == 0) { ?>
+			            <tr>
+			            	<td colspan="100%">Sorry!! No Records found.</td>
+			            </tr>
+		            <?php } ?>
+
+		            <?php foreach($list as $row) { ?>
 			          	<tr>
-			          		<td>01/02/2014</td>
-			          		<td>Pack 1</td>
-			          		<td>ARETR4875GD68SS65</td>
-			          		<td>$ 5.99</td>
-			          		<td>1000</td>
+			          		<td><?php echo date("m/d/Y h:i a",strtotime($row->purchase_date));?></td>
+			          		<td><?php echo $row->package_name;?></td>
+			          		<td><?php echo ucfirst($row->package_type);?></td>
+			          		<td><?php echo $row->transaction_id;?></td>
+			          		<td>$ <?php echo number_format($row->package_price,2);?></td>
+			          		<td><?php echo $row->package_credit;?></td>
 			          	</tr>
-			          	<tr>
-			          		<td>01/02/2014</td>
-			          		<td>Pack 1</td>
-			          		<td>ARETR4875GD68SS65</td>
-			          		<td>$ 5.99</td>
-			          		<td>1000</td>
-			          	</tr>
-			          	<tr>
-			          		<td>01/02/2014</td>
-			          		<td>Pack 1</td>
-			          		<td>ARETR4875GD68SS65</td>
-			          		<td>$ 5.99</td>
-			          		<td>1000</td>
-			          	</tr>
-			          	<tr>
-			          		<td>01/02/2014</td>
-			          		<td>Pack 1</td>
-			          		<td>ARETR4875GD68SS65</td>
-			          		<td>$ 5.99</td>
-			          		<td>1000</td>
-			          	</tr>
-			          	<tr>
-			          		<td>01/02/2014</td>
-			          		<td>Pack 1</td>
-			          		<td>ARETR4875GD68SS65</td>
-			          		<td>$ 5.99</td>
-			          		<td>1000</td>
-			          	</tr>
-			          	<tr>
-			          		<td>01/02/2014</td>
-			          		<td>Pack 1</td>
-			          		<td>ARETR4875GD68SS65</td>
-			          		<td>$ 5.99</td>
-			          		<td>1000</td>
-			          	</tr>
+			        <?php } ?>
 			        </tbody>
 			    </table>
 			</div>

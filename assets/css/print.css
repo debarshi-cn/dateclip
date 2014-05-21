@@ -1,0 +1,13 @@
+* {
+	margin: 0px;
+	padding: 0px;
+}
+.form-horizontal, .btn-group {
+  	display: none;
+  	width:0px !important;
+  	height:0px !important;
+}
+
+.main, .row {
+    margin: 0px;
+}
