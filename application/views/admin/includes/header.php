@@ -12,8 +12,7 @@
 
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<p class="navbar-text">Welcome <a class="active"><?php echo $this->session->userdata('name');?></a></p>
-				<!-- ! <small>. -->
+				<li><a href="<?php echo HTTP_ADMIN_PATH; ?>home/profile">Welcome <?php echo $this->session->userdata('name');?></a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <b class="caret"></b></a>
 					<ul class="dropdown-menu">

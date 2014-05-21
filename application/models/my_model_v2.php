@@ -60,6 +60,7 @@ class my_model_v2 extends CI_Model {
 		$this->db->select($this->select_fields);
 		$query = $this->db->get($this->table_name, $limit, $offset);
 		$this->last_query = $this->db->last_query();
+
 		$this->num_rows = $this->_num_rows($search);
 		return ($limit == 1) ? $query->row() : $query->result();
 	}
@@ -85,7 +86,7 @@ class my_model_v2 extends CI_Model {
 		}
 	}
 
-	public function update($id = 0, $data = array()) { 
+	public function update($id = 0, $data = array()) {
 
 		$id = (int) $id;
 
