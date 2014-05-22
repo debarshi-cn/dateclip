@@ -292,6 +292,29 @@ class my_model_v2 extends CI_Model {
 
 		return $query->result();
 	}
+
+	public function get_advertisement($id = NULL) {
+
+		$this->db->select('*');
+		$this->db->where('id', $id);
+		$query = $this->db->get('advertisement');
+
+		return $query->row();
+	}
+
+	public function update_setting($token = NULL, $data = array()) {
+
+		// print"<pre>";
+		// print_r($token)."<br />";
+		// print_r($data)."<br />";
+		// exit();
+
+		//$this->db->select('*');
+		$this->db->where('token', $token);
+		$query = $this->db->update('site_settings',$data);
+
+		//return $query->row();
+	}
 }
 
 
