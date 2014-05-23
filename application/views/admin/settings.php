@@ -6,6 +6,18 @@
 
 	<h1 class="page-header"><span class="glyphicon glyphicon-wrench"></span> Manage Settings</h1>
 
+	<?php
+		if ($this->session->flashdata('message_type')) {
+			if($this->session->flashdata('message')) {
+
+				echo '<div class="alert alert-'.$this->session->flashdata('message_type').' alert-dismissable">';
+				echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+				echo $this->session->flashdata('message');
+				echo '</div>';
+			}
+		}
+	?>
+
 		<p>&nbsp;</p>
 		<ul class="nav nav-tabs" id="myTab">
 			<li class="active"><a href="#site" data-toggle="tab">Site</a></li>
@@ -24,22 +36,23 @@
 			echo form_open(HTTP_ADMIN_PATH.'settings', $attributes);
       	?>
 		<div class="tab-content">
+
 			<div class="tab-pane active" id="site">
 
 				<p>&nbsp;</p>
 				<div class="form-group">
 					<label for="inputSiteName">Site Name</label>
-					<input required autofocus type="text" class="form-control" id="inputSiteName" name="settings[site_name]" value="">
+					<input type="text" class="form-control" id="inputSiteName" name="settings[site_name]" value="<?php echo $settings['site_name']; ?>">
 				</div>
 
 				<div class="form-group">
 					<label for="inputGMail">General Email</label>
-					<input required type="text" class="form-control" id="inputGMail" name="settings[general_email]" value="">
+					<input type="text" class="form-control" id="inputGMail" name="settings[general_email]" value="<?php echo $settings['general_email']; ?>">
 				</div>
 
 				<div class="form-group">
 					<label for="inputNMail">No-reply Email</label>
-					<input required type="text" class="form-control" id="inputNMail" name="settings[noreply_email]" value="">
+					<input type="text" class="form-control" id="inputNMail" name="settings[noreply_email]" value="<?php echo $settings['noreply_email']; ?>">
 				</div>
 			</div>
 			<div class="tab-pane" id="home">
@@ -47,12 +60,12 @@
 				<p>&nbsp;</p>
 				<div class="form-group">
 					<label for="inputMaleDateClip">Number of Male DateClips (For Annonymus	User)</label>
-					<input required type="text" class="form-control" id="inputMaleDateClip" name="settings[home_male_clip]" value="">
+					<input type="text" class="form-control" id="inputMaleDateClip" name="settings[home_male_clip]" value="<?php echo $settings['home_male_clip']; ?>">
 				</div>
 
 				<div class="form-group">
 					<label for="inputFemaleDateClip">Number of Female DateClips (For Annonymus User)</label>
-					<input required type="text" class="form-control" id="inputFemaleDateClip" name="settings[home_female_clip]" value="">
+					<input type="text" class="form-control" id="inputFemaleDateClip" name="settings[home_female_clip]" value="<?php echo $settings['home_female_clip']; ?>">
 				</div>
 			</div>
 
@@ -70,17 +83,17 @@
 				<p>&nbsp;</p>
 				<div class="form-group">
 					<label for="inputClipSize">Upload DateClip Size</label>
-					<input required autofocus type="text" class="form-control" id="inputClipSize" name="settings[video_size]" value="">
+					<input type="text" class="form-control" id="inputClipSize" name="settings[video_size]" value="<?php echo $settings['video_size']; ?>">
 				</div>
 
 				<div class="form-group">
 					<label for="inputClipLength">DateClip Length</label>
-					<input required type="text" class="form-control" id="inputClipLength" name="settings[video_length]" value="">
+					<input type="text" class="form-control" id="inputClipLength" name="settings[video_length]" value="<?php echo $settings['video_length']; ?>">
 				</div>
 
 				<div class="form-group">
 					<label for="inputClipType">Allowed	DateClip File Type</label>
-					<input required type="text" class="form-control" id="inputClipType" name="settings[video_file_type]" value="">
+					<input type="text" class="form-control" id="inputClipType" name="settings[video_file_type]" value="<?php echo $settings['video_file_type']; ?>">
 				</div>
 			</div>
 
@@ -88,14 +101,15 @@
 				<p>&nbsp;</p>
 				<div class="form-group">
 					<label for="inputFBAppID">Facebook App ID</label>
-					<input required autofocus type="text" class="form-control" id="inputFBAppID" name="settings[fb_app_id]" value="">
+					<input type="text" class="form-control" id="inputFBAppID" name="settings[fb_app_id]" value="<?php echo $settings['fb_app_id']; ?>">
 				</div>
 
 				<div class="form-group">
 					<label for="inputFBKey">Facebook App Secret Key</label>
-					<input required type="text" class="form-control" id="inputFBKey" name="settings[fb_app_key]" value="">
+					<input type="text" class="form-control" id="inputFBKey" name="settings[fb_app_key]" value="<?php echo $settings['fb_app_key']; ?>">
 				</div>
 			</div>
+
 	  	</div>
 
 	  	<div class="form-group">

@@ -25,7 +25,7 @@ class Users extends MY_Controller {
         if (!$this->session->userdata('is_admin_login')) {
             redirect('admin/home');
         }
-
+        
         $this->load->model('my_model_v2');
         $this->my_model_v2->initialize(array(
         	'table_name' => 'user',

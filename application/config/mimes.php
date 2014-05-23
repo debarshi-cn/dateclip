@@ -99,8 +99,8 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'xl'	=>	'application/excel',
 				'eml'	=>	'message/rfc822',
 				'json' => array('application/json', 'text/json'),
-				'wmv'   =>     array('video/wmv', 'video/x-ms-wmv', 'flv-application/octet-stream', 'application/octet-stream'),
-				'flv'   =>     array('video/flv', 'video/x-flv', 'flv-application/octet-stream', 'application/octet-stream'),
+				//'wmv'   =>     array('video/wmv', 'video/x-ms-wmv', 'flv-application/octet-stream', 'application/octet-stream'),
+				//'flv'   =>     array('video/flv', 'video/x-flv', 'flv-application/octet-stream', 'application/octet-stream'),
 			);
 
 

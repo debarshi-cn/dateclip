@@ -201,6 +201,119 @@ class my_model_v2 extends CI_Model {
 		}
 		return $str;
 	}
+
+	
+	public function check_fb_user($id = NULL, $email = NULL) {
+
+		$this->db->where('fb_user_id', $id);
+		$this->db->where('email', $email);
+		$query = $this->db->get('user');
+
+		//echo $this->db->last_query();exit();
+
+		if ($query->num_rows == 0) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function check_user($id = NULL){
+
+		$this->db->where('user_id', $id);
+		$query = $this->db->get('user_search_settings');
+
+		if ($query->num_rows == 0) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function update_user_search_settings($id = 0, $data = array()) { 
+
+		$id = (int) $id;
+
+		if ($id && is_array($data)) {
+			$this->db->where('user_id', $id);
+			$this->db->update($this->table_name, $data);
+			//echo $this->db->last_query();exit();
+			$this->_optimize();
+
+			$report = array();
+			$report['error'] = $this->db->_error_number();
+			$report['message'] = $this->db->_error_message();
+
+			if ($report !== 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public function get_user($fb_user_id = NULL) {
+
+		$this->db->where('fb_user_id', $fb_user_id);
+		$query = $this->db->get('user');
+
+		return $query->row()->id;
+
+	}
+
+	public function get_user_dateclip($user_id = NULL) {
+
+		$this->db->select('*');
+		$this->db->where('user_id', $user_id);
+		$this->db->where('deleted', NULL);
+		$query = $this->db->get('dateclip');
+
+		if ($query->num_rows > 0) {
+			return $query->row();
+		} 
+	}
+
+	public function update_dateclip($id = NULL, $data = array()) {
+
+		$this->db->where('user_id', $id);
+		$this->db->update('dateclip', $data);
+
+		return TRUE;
+	}
+
+	public function get_dateclip() {
+
+		$this->db->select('*');
+		$this->db->where('user_id !=', $this->session->userdata('session_user_id'));
+		$query = $this->db->get('dateclip');
+
+		return $query->result();
+	}
+
+	public function get_advertisement($id = NULL) {
+
+		$this->db->select('*');
+		$this->db->where('id', $id);
+		$query = $this->db->get('advertisement');
+
+		return $query->row();
+	}
+
+	public function update_setting($token = NULL, $data = array()) {
+
+		// print"<pre>";
+		// print_r($token)."<br />";
+		// print_r($data)."<br />";
+		// exit();
+
+		//$this->db->select('*');
+		$this->db->where('token', $token);
+		$query = $this->db->update('site_settings',$data);
+
+		//return $query->row();
+	}
 }
 
 

@@ -6,7 +6,7 @@
 
 	<h1 class="page-header"><span class="glyphicon glyphicon-user"></span> User Management</h1>
 
-	<?php
+	<?php 
 		if($this->session->flashdata('message_type')) {
 			if($this->session->flashdata('message')) {
 
@@ -131,7 +131,7 @@
 
 <!-- Modal -->
 <div class="modal fade bs-example-modal-lg" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg"">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-body">
 				<!-- Remote data loads here -->

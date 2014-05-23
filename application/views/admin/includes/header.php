@@ -26,6 +26,7 @@
 				        <li class="optional <?php echo $page == 'flag' ? 'active' : '' ?>"><a href="<?php echo HTTP_ADMIN_PATH; ?>flag"><span class="glyphicon glyphicon-flag"></span> Flag Mangement</a></li>
 				        <li class="optional <?php echo $page == 'coach' ? 'active' : '' ?>"><a href="<?php echo HTTP_ADMIN_PATH; ?>coach"><span class="glyphicon glyphicon-tag"></span> Coach Mangement</a></li>
 				        <li class="optional <?php echo $page == 'package' ? 'active' : '' ?>"><a href="<?php echo HTTP_ADMIN_PATH; ?>package"><span class="glyphicon glyphicon-shopping-cart"></span> Credit Plan Mangement</a></li>
+				        <li <?php echo $page == 'advertisement' ? 'class="active"' : '' ?>><a href="<?php echo HTTP_ADMIN_PATH; ?>advertisement"><span class="glyphicon glyphicon-camera"></span> Advertise Mangement</a></li>
 				    	<li class="optional divider"></li>
 				    	<li class="optional <?php echo $page == 'report-dateclip' ? 'active' : '' ?>"><a href="<?php echo HTTP_ADMIN_PATH; ?>report/dateclip"><span class="glyphicon glyphicon-facetime-video"></span> Flagged DateClips</a></li>
 				        <li class="optional <?php echo $page == 'report-message' ? 'active' : '' ?>"><a href="<?php echo HTTP_ADMIN_PATH; ?>report/message"><span class="glyphicon glyphicon-flag"></span> Flagged Messages</a></li>
