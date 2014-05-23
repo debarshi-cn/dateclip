@@ -126,7 +126,12 @@ class Admin_model extends CI_Model {
 		$query = $this->db->query($sql_has_dateclip);
 		$total_has_dateclip = $query->row();
 
-		$data['has_dateclip'] = $total_has_dateclip->has_dateclip;
+		if (empty($total_has_dateclip)) {
+			$data['has_dateclip'] = 0;
+		} else {
+			$data['has_dateclip'] = $total_has_dateclip->has_dateclip;
+		}
+
 
 		return $data;
 	}

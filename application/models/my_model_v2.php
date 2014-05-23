@@ -60,16 +60,17 @@ class my_model_v2 extends CI_Model {
 		$this->db->select($this->select_fields);
 		$query = $this->db->get($this->table_name, $limit, $offset);
 		$this->last_query = $this->db->last_query();
-
 		$this->num_rows = $this->_num_rows($search);
 		return ($limit == 1) ? $query->row() : $query->result();
 	}
 
 	public function insert($data = array()) {
 
+
 		if (is_array($data)) {
 			$this->db->insert($this->table_name, $data);
 			$this->insert_id = $this->db->insert_id();
+			//echo $this->db->last_query();exit();
 			$this->_optimize();
 
 			$report = array();
@@ -201,6 +202,7 @@ class my_model_v2 extends CI_Model {
 		return $str;
 	}
 }
+
 
 /* End of file my_model_v2.php */
 /* Location: ./application/models/my_model_v2.php */
