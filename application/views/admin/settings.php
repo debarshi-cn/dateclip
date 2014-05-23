@@ -102,11 +102,13 @@
 				<div class="form-group">
 					<label for="inputFBAppID">Facebook App ID</label>
 					<input type="text" class="form-control" id="inputFBAppID" name="settings[fb_app_id]" value="<?php echo $settings['fb_app_id']; ?>">
+					<p class="help-block"><span class="glyphicon glyphicon-exclamation-sign"></span> Wrong App ID can result front end malfunction</p>
 				</div>
 
 				<div class="form-group">
 					<label for="inputFBKey">Facebook App Secret Key</label>
 					<input type="text" class="form-control" id="inputFBKey" name="settings[fb_app_key]" value="<?php echo $settings['fb_app_key']; ?>">
+					<p class="help-block"><span class="glyphicon glyphicon-exclamation-sign"></span> Wrong Secret Key can result front end malfunction</p>
 				</div>
 			</div>
 

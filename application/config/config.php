@@ -373,6 +373,8 @@ define('HTTP_CSS_PATH_ADMIN', $config['base_url'].'assets/admin/css/');
 define('HTTP_IMAGES_PATH_ADMIN', $config['base_url'].'assets/admin/images/');
 define('HTTP_JS_PATH_ADMIN', $config['base_url'].'assets/js/jquery/');
 
+define('UPLOAD_VIDEO_DIR', 'assets/ad/');
+define('UPLOAD_DATECLIP_DIR', 'assets/dateclip/');
 
 function __autoload($class)
 {

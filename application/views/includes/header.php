@@ -8,7 +8,7 @@
 </div>
 <?php //print_r($user_data);?>
 <ul>
-	<li><a href="<?php echo site_url("video/add_video");?>">Edit Dateclip</a></li>
+	<li><a href="<?php echo site_url("dateclip");?>">Edit Dateclip</a></li>
 	<li><a href="<?php echo site_url("search");?>">Search Settings</a></li>
 	<li><a href="<?php echo site_url("search");?>">Invite Friends</a></li>
 	<li><a href="<?php echo site_url("search");?>">Get Passion Points</a></li>

@@ -55,7 +55,7 @@ class Facebook extends BaseFacebook
    * @see BaseFacebook::__construct
    */
   public function __construct($config) {
-    if ((function_exists('session_status') 
+    if ((function_exists('session_status')
       && session_status() !== PHP_SESSION_ACTIVE) || !session_id()) {
       session_start();
     }
@@ -70,7 +70,7 @@ class Facebook extends BaseFacebook
         'secret' => $this->_ci->config->item('secret'),
         );
     }
-    
+
     if( !isset($config['appId']) || !isset($config['secret']) ){
       $this->_ci =& get_instance();
       $this->_ci->load->config('facebook');

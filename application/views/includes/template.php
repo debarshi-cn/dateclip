@@ -25,7 +25,9 @@
 
 <div class="container">
 	<?php $this->load->view('includes/header'); ?>
-	<?php $this->load->view($main_content); ?>
+	<div style="border:solid 1px; height:500px;">
+		<?php $this->load->view($main_content); ?>
+	</div>
 	<?php $this->load->view('includes/footer'); ?>
 </div>
 </body>

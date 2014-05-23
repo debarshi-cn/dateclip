@@ -27,17 +27,7 @@ class Home extends Front_Controller {
 
         $data['page'] = 'home';
 
-        // Automatically picks appId and secret from config
-        $this->load->library('facebook');
-        $data['login_url'] = $this->facebook->getLoginUrl(array(
-        		'redirect_uri' => site_url('home/login'),
-        		'scope' => array("email, user_birthday, user_photos, friends_hometown") // permissions here
-        ));
-        $data['logout_url'] = site_url('home/logout');
-
         $data['list'] = $this->front_model->get_dateclip();
-
-        print_r($this->data['config']);
 
         $data['main_content'] = 'home';
         $this->load->view('includes/template', $data);
@@ -47,8 +37,6 @@ class Home extends Front_Controller {
 
     public function login() {
 
-    	// Automatically picks appId and secret from config
-    	$this->load->library('facebook');
     	$user = $this->facebook->getUser();
 
     	if ($user) {
@@ -136,8 +124,6 @@ class Home extends Front_Controller {
     }
 
     public function logout() {
-
-    	$this->load->library('facebook');
 
     	$session_data = array (
     							'fb_user_id' => '',

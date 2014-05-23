@@ -14,8 +14,6 @@ class Advertisement extends MY_Controller {
             redirect('admin/home');
         }
 
-        define('UPLOAD_VIDEO_DIR', 'assets/ad/');
-
         $this->load->model('my_model_v2');
         $this->my_model_v2->initialize(array(
         	'table_name' => 'advertisement',

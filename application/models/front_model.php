@@ -84,7 +84,7 @@ class Front_model extends CI_Model {
 	}
 
 
-	/*
+
 	public function get_user_dateclip($user_id = NULL) {
 
 		$this->db->select('*');
@@ -101,9 +101,8 @@ class Front_model extends CI_Model {
 
 		$this->db->where('user_id', $id);
 		$this->db->update('dateclip', $data);
-
 		return TRUE;
-	}*/
+	}
 
 	public function insert_activity($activity, $associated_id, $user_id, $credit = 0) {
 

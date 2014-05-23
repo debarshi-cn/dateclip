@@ -20,7 +20,7 @@ if($this->session->flashdata('message_type')) {
   <?php $i = 1;?>
   <?php foreach ($list as $value) : ?>
     <div class="item <?php echo ($i == 1)?"active":"";?>">
-      <img src="<?php echo site_url("assets/uploads/".$value->dateclip);?>" title="">
+      <img src="<?php echo site_url(UPLOAD_DATECLIP_DIR.$value->dateclip);?>" title="">
       <div class="carousel-caption"></div>
       <input type="text" name="dateclip_id" id="dateclip_id" value="<?php echo $value->id;?>" >
     </div>
