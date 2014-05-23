@@ -30,12 +30,13 @@ if($this->session->flashdata('message_type')) {
 
 </div>
 
+<?php if (count($list) > 0) { ?>
 <h2>Rate Me</h2>
 <a class="btn btn-info btn-xs clickButton" href='javascript:;' id="like" title='Like'>Like</a>&nbsp;&nbsp;
 <a class="btn btn-info btn-xs clickButton" href='javascript:;' id="dislike" title='Dislike'>Dislike</a>&nbsp;&nbsp;
 <a class="btn btn-info btn-xs modalButton" href="javascript:;" data-src="<?php echo site_url("home/flag"); ?>" data-toggle="modal" data-target="#popModal">Flag</a>&nbsp;&nbsp;
 <a class="btn btn-info btn-xs modalButton" href="javascript:;" data-src="<?php echo site_url("home/coach"); ?>" data-toggle="modal" data-target="#popModal">Coach</a>&nbsp;&nbsp;
-
+<?php }?>
 
 <!-- Modal -->
 <div class="modal fade bs-example-modal-xs" id="popModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

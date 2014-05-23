@@ -39,9 +39,9 @@
 		    	<p class="form-control-static"><?php echo date("m/d/Y h:i a",strtotime($user[0]->create_date));?></p>
 		    </div>
 
-		    <label class="col-sm-2 control-label">PP available:</label>
+		    <label class="col-sm-2 control-label">Passion Points:</label>
 		    <div class="col-sm-2">
-		    	<p class="form-control-static">2344</p>
+		    	<p class="form-control-static"><?php echo $user[0]->credit;?></p>
 		    </div>
 		</div>
 

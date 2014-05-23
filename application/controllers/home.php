@@ -37,6 +37,8 @@ class Home extends Front_Controller {
 
         $data['list'] = $this->front_model->get_dateclip();
 
+        print_r($this->data['config']);
+
         $data['main_content'] = 'home';
         $this->load->view('includes/template', $data);
     }
