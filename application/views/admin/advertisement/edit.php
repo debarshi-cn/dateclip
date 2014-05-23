@@ -15,18 +15,18 @@
       	?>
 	  	<div class="form-group">
 	  		<label for="inputName">Name</label>
-	  		<input type="text" name="title" class="form-control" id="inputName" placeholder="Title" value="<?php echo $data_info[0]->title; ?>" required>
+	  		<input type="text" name="title" class="form-control" id="inputName" placeholder="Title" value="<?php echo $data_info->title; ?>" required>
 	  	</div>
 
 	  	<div class="form-group">
 	  		<label for="inputDesc">Description</label>
-	  		<textarea style="height: 20%" class="form-control" name="description" id="inputDesc" placeholder="Advertisement description" rows="3"><?php echo $data_info[0]->description; ?></textarea>
+	  		<textarea style="height: 20%" class="form-control" name="description" id="inputDesc" placeholder="Advertisement description" rows="3"><?php echo $data_info->description; ?></textarea>
 	  	</div>
 
-	  	<?php if ($data_info[0]->video) { ?>
+	  	<?php if ($data_info->video) { ?>
 	  	<div class="form-group">
 	  		<label for="inputDesc">Existing video</label><br />
-	  		<img src="<?php echo site_url("assets/ad/".$data_info[0]->video);?>" width="180px;" height="130px;" />	<??>
+	  		<img src="<?php echo site_url(UPLOAD_VIDEO_DIR.$data_info->video);?>" width="180px;" height="130px;" />	<??>
 	  	</div>
 	  	<?php }?>
 
@@ -39,13 +39,13 @@
 	  		<label for="">Status</label>
 	  		<div class="radio">
 			  <label for="checkboxActive">
-			    <input type="radio" name="status" id="checkboxActive" value="1" <?php if($data_info[0]->status != "0") echo "checked";?> checked>
+			    <input type="radio" name="status" id="checkboxActive" value="1" <?php if($data_info->status != "0") echo "checked";?> checked>
 			    Active
 			  </label>
 			</div>
 			<div class="radio">
 			  <label for="checkboxinactive">
-			    <input type="radio" name="status" id="checkboxinactive" value="0" <?php if($data_info[0]->status == "0") echo "checked";?> >
+			    <input type="radio" name="status" id="checkboxinactive" value="0" <?php if($data_info->status == "0") echo "checked";?> >
 			    In-active
 			  </label>
 			</div>

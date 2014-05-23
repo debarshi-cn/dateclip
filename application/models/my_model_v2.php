@@ -110,6 +110,27 @@ class my_model_v2 extends CI_Model {
 		}
 	}
 
+	public function update_by_field($field = NULL, $field_value = NULL, $data = array()) {
+
+		if ($field && $field_value && is_array($data)) {
+			$this->db->where($field, $field_value);
+			$this->db->update($this->table_name, $data);
+			$this->_optimize();
+
+			$report = array();
+			$report['error'] = $this->db->_error_number();
+			$report['message'] = $this->db->_error_message();
+
+			if ($report !== 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
 	public function delete($id = 0) {
 
 		$id = (int) $id;
@@ -200,16 +221,6 @@ class my_model_v2 extends CI_Model {
 			$str .= $open . $val . $close;
 		}
 		return $str;
-	}
-
-
-
-	public function update_setting($token = NULL, $data = array()) {
-
-		$this->db->where('token', $token);
-		$query = $this->db->update('site_settings',$data);
-
-		//return $query->row();
 	}
 }
 

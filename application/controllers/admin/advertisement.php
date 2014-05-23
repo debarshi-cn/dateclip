@@ -14,6 +14,8 @@ class Advertisement extends MY_Controller {
             redirect('admin/home');
         }
 
+        define('UPLOAD_VIDEO_DIR', 'assets/ad/');
+
         $this->load->model('my_model_v2');
         $this->my_model_v2->initialize(array(
         	'table_name' => 'advertisement',
@@ -50,44 +52,41 @@ class Advertisement extends MY_Controller {
 
     		$this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>', '</div>');
     		//if the form has passed through the validation
-    		
+
+
             if ($this->form_validation->run()) {
 
+            	$data_to_store = array(
+            		'title' => htmlspecialchars($this->input->post('title'), ENT_QUOTES, 'utf-8'),
+            		'description' => $this->input->post('description'),
+            		'status' => htmlspecialchars($this->input->post('status'), ENT_QUOTES, 'utf-8')
+            	);
+
                 // UPLOAD VIDEO HERE STARTS
-                if (is_uploaded_file($_FILES['video']['tmp_name'])) {
-                    unset($config);
-                    $date = date("ymd");
-                    $configVideo['upload_path'] = './assets/ad';
-                    //$configVideo['max_size'] = '10240';
-                    //$configVideo['allowed_types'] = 'avi|flv|wmv|mp3';
-                    $configVideo['allowed_types'] = 'jpg|png|jpeg';
-                    //$configVideo['overwrite'] = FALSE;
-                    //$configVideo['remove_spaces'] = TRUE;
-                    $video_name = $date.$_FILES['video']['name'];
-                    $configVideo['file_name'] = $video_name;
-         
-                    $this->load->library('upload', $configVideo);
-                    $this->upload->initialize($configVideo);
+            	if (is_uploaded_file($_FILES['video']['tmp_name'])) {
+
+                    $config['upload_path'] = UPLOAD_VIDEO_DIR;
+                    //$config['max_size'] = '10240';
+                    //$config['allowed_types'] = 'avi|flv|wmv|mp3';
+                    $config['allowed_types'] = 'jpg|png|jpeg';
+                    $config['overwrite'] = FALSE;
+                    $config['remove_spaces'] = TRUE;
+                    //$video_name = date("ymdhis");
+                    $config['file_name'] = $video_name;
+
+                    $this->load->library('upload', $config);
+
                     if (!$this->upload->do_upload('video')) {
-                        echo $this->upload->display_errors();
+                        $this->session->set_flashdata('message_type', 'danger');
+                        $this->session->set_flashdata('message', '<strong>Oh snap!</strong> '.$this->upload->display_errors());
+
+                        redirect('/admin/advertisement/');
+
                     } else {
-                        $videoDetails = $this->upload->data();
-                        //echo $video_name; exit();
-                        $data['img_name'] = $video_name;
+                    	$upload_data =  $this->upload->data();
+                    	$data_to_store['video'] = $upload_data['file_name'];
                     }
-                } else {
-
-                    $video_name = "";
                 }
-                // UPLOAD VIDEO HERE ENDS
-
-    			$data_to_store = array(
-
-    				'title' => htmlspecialchars($this->input->post('title'), ENT_QUOTES, 'utf-8'),
-    				'description' => $this->input->post('description'),
-                    'video' => htmlspecialchars($video_name, ENT_QUOTES, 'utf-8'),
-                    'status' => htmlspecialchars($this->input->post('status'), ENT_QUOTES, 'utf-8')
-    			);
 
     			if ($this->my_model_v2->insert($data_to_store)) {
     				$this->session->set_flashdata('message_type', 'success');
@@ -101,7 +100,7 @@ class Advertisement extends MY_Controller {
     	}
 
         $data['page'] = 'advertisement';
-        $data['page_title'] = 'DateClip Admin Panel :: Advertisement Management &raquo; Add advertisement';
+        $data['page_title'] = 'DateClip Admin Panel :: Advertisement Management &raquo; Add Advertisement';
 
         $data['main_content'] = 'admin/advertisement/add';
         $this->load->view('admin/includes/template', $data);
@@ -127,45 +126,39 @@ class Advertisement extends MY_Controller {
 
     		if ($this->form_validation->run()) {
 
-                $video = $this->my_model_v2->get_advertisement($id);
-
-
-                // UPLOAD VIDEO HERE STARTS
-                if (is_uploaded_file($_FILES['video']['tmp_name'])) {
-                    
-                    unset($config);
-                    $date = date("ymd");
-                    $configVideo['upload_path'] = './assets/ad';
-                    //$configVideo['max_size'] = '10240';
-                    //$configVideo['allowed_types'] = 'avi|flv|wmv|mp3';
-                    $configVideo['allowed_types'] = 'jpg|png|jpeg';
-                    //$configVideo['overwrite'] = FALSE;
-                    //$configVideo['remove_spaces'] = TRUE;
-                    $video_name = $date.$_FILES['video']['name'];
-                    $configVideo['file_name'] = $video_name;
-         
-                    $this->load->library('upload', $configVideo);
-                    $this->upload->initialize($configVideo);
-                    if (!$this->upload->do_upload('video')) {
-                        echo $this->upload->display_errors();
-                    } else {
-                        $videoDetails = $this->upload->data();
-                        $data['img_name'] = $video_name;
-                    }
-
-                } else {
-
-                    $video_name = $video->video;
-                }
-
-    			$data_to_store = array(
+                $data_to_store = array(
                     'title' => htmlspecialchars($this->input->post('title'), ENT_QUOTES, 'utf-8'),
                     'description' => $this->input->post('description'),
-                    'video' => htmlspecialchars($video_name, ENT_QUOTES, 'utf-8'),
                     'status' => htmlspecialchars($this->input->post('status'), ENT_QUOTES, 'utf-8')
                 );
 
-    			//if the insert has returned true then we show the flash message
+                // UPLOAD VIDEO HERE STARTS
+                if (is_uploaded_file($_FILES['video']['tmp_name'])) {
+
+                    $config['upload_path'] = UPLOAD_VIDEO_DIR;
+                    //$config['max_size'] = '10240';
+                    //$config['allowed_types'] = 'avi|flv|wmv|mp3';
+                    $config['allowed_types'] = 'jpg|png|jpeg';
+                    $config['overwrite'] = FALSE;
+                    $config['remove_spaces'] = TRUE;
+                    //$video_name = date("ymdhis");
+                    $config['file_name'] = $video_name;
+
+                    $this->load->library('upload', $config);
+
+                    if (!$this->upload->do_upload('video')) {
+                        $this->session->set_flashdata('message_type', 'danger');
+                        $this->session->set_flashdata('message', '<strong>Oh snap!</strong> '.$this->upload->display_errors());
+
+                        redirect('/admin/advertisement/');
+
+                    } else {
+                    	$upload_data =  $this->upload->data();
+                    	$data_to_store['video'] = $upload_data['file_name'];
+                    }
+                }
+
+    			// if the insert has returned true then we show the flash message
     			if ($this->my_model_v2->update($id, $data_to_store)) {
     				$this->session->set_flashdata('message_type', 'success');
     				$this->session->set_flashdata('message', '<strong>Well done!</strong> Advertisement successfully updated.');
@@ -177,7 +170,7 @@ class Advertisement extends MY_Controller {
     		}
     	}
 
-    	$data['data_info'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
+    	$data['data_info'] = $this->my_model_v2->get(1, NULL, NULL, array('id' => $id));
 
     	if (!is_numeric($id) || $id == 0 || empty($data['data_info'])) {
     		redirect('/admin/advertisement/');
@@ -197,23 +190,29 @@ class Advertisement extends MY_Controller {
      */
     public function delete($id = null) {
 
-    	$data['data_info'] = $this->my_model_v2->get(NULL, NULL, NULL, array('id' => $id));
+    	$ad_info = $this->my_model_v2->get(1, NULL, NULL, array('id' => $id));
 
-        if (!is_numeric($id) || $id == 0 || empty($data['data_info'])) {
+        if (!is_numeric($id) || $id == 0 || empty($ad_info)) {
     		redirect('/admin/advertisement/');
     	}
 
-        // if (!$this->my_model_v2->is_valid_data('user_package_log', array('package_id' => $id))) {
+    	// Try to delete the file first
+    	if ($ad_info->video <> "") {
+    		if(!unlink(UPLOAD_VIDEO_DIR.$ad_info->video)) {
+    			$this->session->set_flashdata('message_type', 'danger');
+    			$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Can\'t delete the file.');
+        		redirect('/admin/advertisement/');
+    		}
+    	}
 
-            if ($this->my_model_v2->delete($id)) {
-                $this->session->set_flashdata('message_type', 'success');
-    			$this->session->set_flashdata('message', '<strong>Well done!</strong> package successfully deleted.');
-            } else {
-            	$this->session->set_flashdata('message_type', 'danger');
-            	$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Change something and try again.');
-            }
-            redirect('/admin/advertisement/');
-
+        if ($this->my_model_v2->delete($id)) {
+        	$this->session->set_flashdata('message_type', 'success');
+    		$this->session->set_flashdata('message', '<strong>Well done!</strong> package successfully deleted.');
+        } else {
+        	$this->session->set_flashdata('message_type', 'danger');
+        	$this->session->set_flashdata('message', '<strong>Oh snap!</strong> Change something and try again.');
+        }
+        redirect('/admin/advertisement/');
     }
 }
 

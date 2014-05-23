@@ -40,71 +40,22 @@ class Settings extends MY_Controller {
      */
     public function index() {
 
-        $data_settings = $this->my_model_v2->get();
-
     	//if save button was clicked, get the data sent via post
     	if ($this->input->server('REQUEST_METHOD') === 'POST') {
 
-            //form validation
-            // $this->form_validation->set_rules('name', 'Full Name', 'required');
+    		$post_settings = $this->input->post('settings');
 
-            // if ($this->input->post('password') != "") {
-            //     //echo 1;exit();
-            //     $this->form_validation->set_rules('new_pwd', 'New Password', 'trim|required|matches[re_pwd]');
-            //     $this->form_validation->set_rules('re_pwd', 'Retype Password', 'trim|required');
-            // }
+            if (count($post_settings)) {
 
+                foreach ($post_settings as $key => $value) {
 
-            // $this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>', '</div>');
-            //if the form has passed through the validation
-
-            //if ($this->form_validation->run()) {
-            // $data = array();
-            // foreach ($_POST['settings'] as $key => $value) {
-            //     //$data = $key[$value];
-            //     print"<pre>";
-            //     print_r($value);
-            // }
-            // $data_to_store['token'] = $key;
-            // $data_to_store['value'] = $value;
-
-         //    $data_settings = $this->my_model_v2->get();
-         //    print"<pre>";
-         // print_r($data_settings);
-         // exit();
-
-            // if (!count($data_settings)) {
-            
-            //     foreach ($_POST['settings'] as $key => $value) {
-            //         //$data_to_store[$key] = $value;
-            //         if($value != "") {
-            //             $data_to_store = array(
-            //                 'token' => htmlspecialchars($key, ENT_QUOTES, 'utf-8'),
-            //                 'value' => htmlspecialchars($value, ENT_QUOTES, 'utf-8')
-            //             );
-
-            //             $this->my_model_v2->insert($data_to_store);
-            //         }
-            //     }
-
-            //     $this->session->set_flashdata('message_type', 'success');
-            //     $this->session->set_flashdata('message', '<strong>Well done!</strong> Settings successfully inserted.');
-
-            //     redirect('admin/settings');      
-            // }
-             
-            if (count($data_settings)) {
-
-                foreach ($_POST['settings'] as $key => $value) {
-                    //$data_to_store[$key] = $value;
-                    if($value != "") {
+                	if ($value <> "") {
                         $data_to_store = array(
-                            'token' => htmlspecialchars($key, ENT_QUOTES, 'utf-8'),
                             'value' => htmlspecialchars($value, ENT_QUOTES, 'utf-8')
                         );
-                    }
 
-                    $this->my_model_v2->update_setting($key,$data_to_store);
+                        $this->my_model_v2->update_by_field('token', $key, $data_to_store);
+                    }
                 }
 
                 $this->session->set_flashdata('message_type', 'success');
@@ -112,21 +63,23 @@ class Settings extends MY_Controller {
 
                 redirect('admin/settings');
             }
-
-            //} //validation run
     	}
+
+    	$data_settings = $this->my_model_v2->get();
 
         $settings = array();
         foreach ($data_settings as $key => $obj) {
             $settings[$obj->token] = $obj->value;
         }
 
-        if (count($settings)) {
+        $data['settings'] = $settings;
+
+        /*if (count($settings)) {
             $data['settings'] = $settings;
         } else {
             $data['settings'] = "";
-        }
-        
+        }*/
+
 
         $data['page'] = 'settings';
         $data['page_title'] = 'DateClip Admin Panel :: Manage Settings';
