@@ -73,30 +73,27 @@ class Settings extends MY_Controller {
          // print_r($data_settings);
          // exit();
 
-            if (!count($data_settings)) {
+            // if (!count($data_settings)) {
             
-                foreach ($_POST['settings'] as $key => $value) {
-                    //$data_to_store[$key] = $value;
-                    if($value != "") {
-                        $data_to_store = array(
-                            'token' => htmlspecialchars($key, ENT_QUOTES, 'utf-8'),
-                            'value' => htmlspecialchars($value, ENT_QUOTES, 'utf-8')
-                        );
+            //     foreach ($_POST['settings'] as $key => $value) {
+            //         //$data_to_store[$key] = $value;
+            //         if($value != "") {
+            //             $data_to_store = array(
+            //                 'token' => htmlspecialchars($key, ENT_QUOTES, 'utf-8'),
+            //                 'value' => htmlspecialchars($value, ENT_QUOTES, 'utf-8')
+            //             );
 
-                        $this->my_model_v2->insert($data_to_store);
-                    }
-                }
+            //             $this->my_model_v2->insert($data_to_store);
+            //         }
+            //     }
 
-                //if ($this->my_model_v2->insert($data_to_store)) {
-                    $this->session->set_flashdata('message_type', 'success');
-                    $this->session->set_flashdata('message', '<strong>Well done!</strong> Settings successfully inserted.');
-                // } else {
-                //     $this->session->set_flashdata('message_type', 'danger');
-                //     $this->session->set_flashdata('message', '<strong>Oh snap!</strong> Change something and try again.');
-                // }
+            //     $this->session->set_flashdata('message_type', 'success');
+            //     $this->session->set_flashdata('message', '<strong>Well done!</strong> Settings successfully inserted.');
 
-                redirect('admin/settings');      
-            } else {
+            //     redirect('admin/settings');      
+            // }
+             
+            if (count($data_settings)) {
 
                 foreach ($_POST['settings'] as $key => $value) {
                     //$data_to_store[$key] = $value;
@@ -119,16 +116,17 @@ class Settings extends MY_Controller {
             //} //validation run
     	}
 
-        
-         // print"<pre>";
-         // print_r($data_settings);
-         // exit();
         $settings = array();
         foreach ($data_settings as $key => $obj) {
             $settings[$obj->token] = $obj->value;
         }
 
-        $data['settings'] = $settings;
+        if (count($settings)) {
+            $data['settings'] = $settings;
+        } else {
+            $data['settings'] = "";
+        }
+        
 
         $data['page'] = 'settings';
         $data['page_title'] = 'DateClip Admin Panel :: Manage Settings';

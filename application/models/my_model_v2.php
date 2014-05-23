@@ -304,12 +304,6 @@ class my_model_v2 extends CI_Model {
 
 	public function update_setting($token = NULL, $data = array()) {
 
-		// print"<pre>";
-		// print_r($token)."<br />";
-		// print_r($data)."<br />";
-		// exit();
-
-		//$this->db->select('*');
 		$this->db->where('token', $token);
 		$query = $this->db->update('site_settings',$data);
 

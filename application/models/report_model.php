@@ -133,14 +133,9 @@ class Report_model extends CI_Model {
 		} else {
 			return $query->num_rows();
 		}
-<<<<<<< HEAD
-	}
-}
 
-/* End of file report_model.php */
-=======
 	}
-
+	
 
 	/**
 	 * Get Flagged DateClips
@@ -267,5 +262,4 @@ class Report_model extends CI_Model {
 }
 
 /* End of file report_model.php */
->>>>>>> a6e449e8a61c0ab47f0277b9bbd3324400abecc2
 /* Location: ./application/models/report_model.php */
