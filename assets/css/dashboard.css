@@ -92,6 +92,12 @@ body {
 	}
 }
 
+.navbar .divider-vertical {
+	height: 51px;
+	margin: 0 9px;
+	border-right: 1px solid #555;
+	border-left: 1px solid #101010;
+}
 /*
  * Placeholder dashboard ideas
  */
